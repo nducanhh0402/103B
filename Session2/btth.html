@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+let tenNguoiDung = prompt("Nhập tên người dùng (Ví dụ: Nguyen Van A):");
+let vaiTroInput = prompt("Nhập vai trò (admin, student, guest):");
+let soDuInput = +prompt("Nhập số dư tài khoản (Ví dụ: 50000):");
+let trangThaiTheInput = prompt("Trạng thái thẻ (Nhập 'true' là hoạt động, khác là khóa):");
+let soNgayQuaHanInput = +prompt("Số ngày quá hạn trả sách (Ví dụ: 5):");
+
+
+let vaiTro = vaiTroInput ? vaiTroInput.trim().toLowerCase() : ""; 
+let thongBaoQuyenHan = "";
+
+switch (vaiTro) {
+    case "admin":
+        thongBaoQuyenHan = "Chào Admin, bạn có toàn quyền hệ thống";
+        break;
+    case "student":
+        thongBaoQuyenHan = "Chào sinh viên, bạn có thể mượn sách";
+        break;
+    case "guest":
+        thongBaoQuyenHan = "Chào khách, bạn chỉ có thể đọc tại chỗ";
+        break;
+    default:
+        thongBaoQuyenHan = "Lỗi: Vai trò không hợp lệ!";
+}
+
+
+let soDu = Number(soDuInput); 
+
+let theDangHoatDong = (trangThaiTheInput === "true");
+
+let tenHopLe = Boolean(tenNguoiDung);
+
+let ketQuaMuon = "";
+
+if (tenHopLe && (vaiTro === "admin" || vaiTro === "student") && (soDu > 0 &&    theDangHoatDong)) {
+    ketQuaMuon = "ĐƯỢC PHÉP MƯỢN SÁCH";
+} else {
+    ketQuaMuon = "YÊU CẦU BỊ TỪ CHỐI";
+}
+
+let soNgayQuaHan = Number(soNgayQuaHanInput);
+let tienPhat = 0;
+let canhBaoKhoaTK = ""; 
+
+if (soNgayQuaHan <= 0) {
+    tienPhat = 0;
+    canhBaoKhoaTK = "(Cảm ơn bạn đã trả đúng hạn)";
+} else if (soNgayQuaHan >= 1 && soNgayQuaHan <= 5) {
+    tienPhat = soNgayQuaHan * 5000;
+} else if (soNgayQuaHan >= 6 && soNgayQuaHan <= 10) {
+    tienPhat = soNgayQuaHan * 10000;
+} else {
+    tienPhat = 200000;
+    canhBaoKhoaTK = "- TÀI KHOẢN BỊ KHÓA";
+}
+
+let tenHienThi = tenNguoiDung ? tenNguoiDung.toUpperCase() : "KHÔNG XÁC ĐỊNH";
+
+console.log(`
+--- HỆ THỐNG MƯỢN TRẢ ---
+Người dùng: ${tenHienThi}
+Quyền hạn: ${thongBaoQuyenHan}
+Kết quả mượn: ${ketQuaMuon}
+Tình trạng trả sách: Quá hạn ${soNgayQuaHan} ngày ${canhBaoKhoaTK}
+Tiền phạt: ${tienPhat.toLocaleString('vi-VN')} VNĐ
+`);
+    </script>
+</body>
+</html>
