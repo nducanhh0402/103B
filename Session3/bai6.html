@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let tong = 0;
+let nghiemTrong = 0;
+let trungBinh = 0;
+let nhe = 0;
+let deXuat = 0;
+let tichCuc = 0;
+
+let tiepTuc = "có";
+
+while (tiepTuc === "có") {
+    tiepTuc = prompt("Có khiếu nại/phản hồi mới từ bạn đọc không? (có/không)");
+
+    if (tiepTuc === "có") {
+        let ten = prompt("Tên bạn đọc (không được để trống):");
+        while (ten === "") {
+            ten = prompt("Vui lòng nhập tên bạn đọc:");
+        }
+
+        let maThe = prompt("Mã thẻ bạn đọc (nếu có):");
+        let loai = parseInt(prompt("Loại phản hồi (1: Khiếu nại, 2: Đề xuất, 3: Tích cực):"));
+        let noiDung = prompt("Nội dung ngắn gọn:");
+
+        tong = tong + 1;
+
+        if (loai === 1) {
+            let mucDo = parseInt(prompt("Mức độ (1: Nhẹ, 2: Trung bình, 3: Nghiêm trọng):"));
+            
+            if (mucDo === 3) {
+                nghiemTrong = nghiemTrong + 1;
+                console.log("*→ Chuyển ngay lãnh đạo - Khiếu nại nghiêm trọng");
+            } else if (mucDo === 2) {
+                trungBinh = trungBinh + 1;
+                console.log("*→ Ghi nhận, sẽ xử lý trong ngày - Khiếu nại trung bình");
+            } else if (mucDo === 1) {
+                nhe = nhe + 1;
+                console.log("*→ Xử lý ngay tại quầy - Khiếu nại nhẹ");
+            }
+        } else if (loai === 2) {
+            deXuat = deXuat + 1;
+            console.log("*→ Cảm ơn! Đề xuất đã được ghi nhận");
+        } else if (loai === 3) {
+            tichCuc = tichCuc + 1;
+            console.log("*→ Cảm ơn bạn đã phản hồi tích cực!");
+        }
+    }
+}
+
+console.log("--- BÁO CÁO CHI TIẾT ---");
+console.log("Tổng số phản hồi/khiếu nại đã xử lý: " + tong);
+console.log("Số khiếu nại nghiêm trọng (mức 3): " + nghiemTrong);
+console.log("Số khiếu nại trung bình (mức 2): " + trungBinh);
+console.log("Số khiếu nại nhẹ (mức 1): " + nhe);
+console.log("Số đề xuất cải thiện: " + deXuat);
+console.log("Số phản hồi tích cực: " + tichCuc);
+    </script>
+    
+</body>
+</html>

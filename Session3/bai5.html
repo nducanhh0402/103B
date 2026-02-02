@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let tongYeuCau = 0;
+let thanhCong = 0;
+let tuChoi = 0;
+let choXetDuyet = 0;
+
+while (true) {
+    let tiepTuc = prompt("Có yêu cầu đặt mượn trước mới không? (có/không)").toLowerCase();
+
+    if (tiepTuc === "không" || tiepTuc === "khong") break;
+    if (tiepTuc !== "có" && tiepTuc !== "co") continue;
+
+    let tenBanDoc = prompt("Tên bạn đọc:");
+    let maSach = prompt("Mã sách:");
+    let tenSach = prompt("Tên sách:");
+    let soNgayCho = parseInt(prompt("Số ngày dự kiến chờ (>= 1):"));
+    let uuTien = parseInt(prompt("Ưu tiên (1: SV, 2: GV, 3: NV):"));
+
+    tongYeuCau++;
+
+    if (soNgayCho > 45) {
+        tuChoi++;
+        console.log("Từ chối: Thời gian chờ quá lâu (>45 ngày)");
+    } 
+    else if (uuTien === 3) {
+        thanhCong++;
+        console.log("Đặt trước thành công - Ưu tiên đặc cách cao nhất");
+    } 
+    else if (uuTien === 2 && soNgayCho <= 30) {
+        thanhCong++;
+        console.log("Đặt trước thành công - Ưu tiên giảng viên/nghiên cứu");
+    } 
+    else if (uuTien === 1 && soNgayCho <= 21) {
+        thanhCong++;
+        console.log("Đặt trước thành công");
+    } 
+    else {
+        choXetDuyet++;
+        console.log("Đặt trước tạm thời - Chờ xét duyệt thêm");
+    }
+}
+
+console.log("\n--- BÁO CÁO TỔNG HỢP ---");
+console.log(`Tổng số yêu cầu: ${tongYeuCau}`);
+console.log(`Thành công: ${thanhCong}`);
+console.log(`Bị từ chối: ${tuChoi}`);
+console.log(`Chờ xét duyệt: ${choXetDuyet}`);
+    </script>
+</body>
+</html>

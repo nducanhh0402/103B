@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let count = 0;
+        while(count<3){
+            let password = prompt("Nhập mật khẩu:");
+            if(password === "admin123"){
+            console.log("Nhập mật khẩu thành công!");
+            break;
+
+        }else{
+            console.log(`Sai mật khẩu lần ${count +1}`);
+            count++;
+        }
+    }
+        if (count ===3){
+            console.log(" Hệ thống đã bị khóa");
+        }else{
+            choice = +prompt (`
+            1. Nhập lô sách mới
+            2. Vẽ sơ đồ kệ sách
+            3.Thoát
+            `);
+            switch (choice){
+                case 1:
+                    //; 
+                break;
+                case 2:;
+                break;
+                case 3:
+                    console.log("Thoát chương trình");
+                    break;
+                default:
+                    console.log("Lựa chọn không hợp lệ!");
+                    break;
+
+            }
+
+           
+        }
+    </script>   
+</body>
+</html>

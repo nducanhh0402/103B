@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // Khởi tạo các biến thống kê
+let thanhCong = 0;
+let khongThanhCong = 0;
+
+while (true) {
+    let tiepTuc = prompt("Có yêu cầu gia hạn mới không? (có/không)").toLowerCase();
+
+    if (tiepTuc === "không" || tiepTuc === "khong") {
+        break; 
+    } else if (tiepTuc !== "có" && tiepTuc !== "co") {
+        alert("Vui lòng chỉ nhập 'có' hoặc 'không'.");
+        continue;
+    }
+
+    let tenBanDoc = prompt("Tên bạn đọc:");
+    let tenSach = prompt("Tên sách:");
+    
+    let soNgayHienTai;
+    while (true) {
+        soNgayHienTai = parseInt(prompt("Số ngày đã mượn hiện tại (>= 1):"));
+        if (!isNaN(soNgayHienTai) && soNgayHienTai >= 1) break;
+        alert("Vui lòng nhập số nguyên lớn hơn hoặc bằng 1.");
+    }
+
+    let soNgayGiaHan;
+    while (true) {
+        soNgayGiaHan = parseInt(prompt("Số ngày muốn gia hạn thêm (>= 1):"));
+        if (!isNaN(soNgayGiaHan) && soNgayGiaHan >= 1) break;
+        alert("Vui lòng nhập số nguyên lớn hơn hoặc bằng 1.");
+    }
+
+    let tongThoiGian = soNgayHienTai + soNgayGiaHan;
+
+    console.log(`--- Xử lý gia hạn: ${tenBanDoc} - ${tenSach} ---`);
+
+    if (tongThoiGian > 60) {
+        console.error("Kết quả: Không được phép gia hạn");
+        console.log("Thông báo: Không được gia hạn: Tổng thời gian vượt quá 60 ngày tối đa");
+        khongThanhCong++;
+    } 
+    else if (soNgayHienTai > 45) {
+        console.error("Kết quả: Không được gia hạn (quá hạn lâu)");
+        console.log("Thông báo: Không được gia hạn: Đã mượn quá lâu (>45 ngày)");
+        khongThanhCong++;
+    } 
+    else {
+        console.log("Kết quả: Gia hạn bình thường");
+        console.log("Thông báo: Gia hạn thành công");
+        thanhCong++;
+    }
+}
+
+console.log("----------------------------");
+console.log("THỐNG KÊ CA LÀM VIỆC:");
+console.log(`- Số lần gia hạn thành công: ${thanhCong}`);
+console.log(`- Số lần gia hạn không thành công: ${khongThanhCong}`);
+    </script>
+</body>
+</html>

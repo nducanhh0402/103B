@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+let soLuotTra = parseInt(prompt("Hôm nay có bao nhiêu lượt trả sách?"));
+
+while (isNaN(soLuotTra) || soLuotTra <= 0) {
+    soLuotTra = parseInt(prompt("Vui lòng nhập một số nguyên dương cho lượt trả sách:"));
+}
+
+let tongLuotMuon = 0;
+let soLuotTraMuon = 0;
+
+for (let i = 1; i <= soLuotTra; i++) {
+    console.log(`--- Lượt trả thứ ${i} ---`);
+    
+    let tenNguoiTra = prompt(`Nhập tên người trả thứ ${i}:`);
+    let tenSach = prompt(`Nhập tên sách:`);
+    let soNgayThucTe;
+
+    while (true) {
+        soNgayThucTe = parseInt(prompt(`Số ngày đã mượn thực tế cho cuốn "${tenSach}":`));
+        if (!isNaN(soNgayThucTe) && soNgayThucTe >= 1) {
+            break; 
+        }
+        alert("Không hợp lệ! Số ngày phải là số nguyên lớn hơn hoặc bằng 1.");
+    }
+
+    console.log(`Người trả: ${tenNguoiTra} | Sách: ${tenSach} | Số ngày mượn: ${soNgayThucTe}`);
+    
+    if (soNgayThucTe <= 14) {
+        console.log("Tình trạng: Trả đúng hạn");
+    } 
+    else if (soNgayThucTe >= 15 && soNgayThucTe <= 21) {
+        console.log("Tình trạng: Trả muộn nhẹ");
+        console.log("Hình thức: Phạt nhắc nhở");
+        soLuotTraMuon++; 
+    } 
+    else {
+        console.log("Tình trạng: Quá hạn nghiêm trọng");
+        console.log("Hình thức: Cần ghi biên bản phạt");
+        soLuotTraMuon++; 
+    }
+}
+
+console.log("----------------------------");
+console.log("THỐNG KÊ CUỐI NGÀY:");
+console.log(`- Tổng số lượt trả sách: ${soLuotTra}`);
+console.log(`- Số lượt trả muộn (>= 15 ngày): ${soLuotTraMuon}`);
+    </script>
+    
+</body>
+</html>
