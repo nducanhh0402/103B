@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        let danhSachSach = [];
+
+        let soLuong = +prompt("Bạn muốn trả bao nhiêu cuốn sách?");
+
+        for (let i = 1; i <= soLuong; i++) {
+            let tenSach = prompt("Nhập tên cuốn sách thứ " + i + ":");
+
+            danhSachSach.push(tenSach);
+        }
+
+        console.log("Tổng số sách đã được trả: " + danhSachSach.length);
+
+        console.log("Danh sách sách đã trả:");
+
+        for (let j = 0; j < danhSachSach.length; j++) {
+            console.log((j + 1) + ". " + danhSachSach[j]);
+        }
+    </script>
+
+</body>
+
+</html>

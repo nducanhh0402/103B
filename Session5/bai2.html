@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let danhSachSachMuon = [];
+        let soLuong = parseInt(prompt("Hôm nay có bao nhiêu cuốn sách bị trả muộn?"));
+
+        for (let i = 1; i <= soLuong; i++) {
+            let tenSach = prompt(`Nhập tên cuốn sách bị trả muộn thứ ${i}:`);
+            danhSachSachMuon.push(tenSach);
+        }
+
+        console.log(`Tổng số sách bị trả muộn: ${danhSachSachMuon.length}`);
+        console.log("Danh sách sách bị trả muộn:");
+
+        let demSachDai = 0;
+        for (let i = 0; i < danhSachSachMuon.length; i++) {
+            console.log(`${i + 1}. ${danhSachSachMuon[i]}`);
+            if (danhSachSachMuon[i].length > 20) {
+                demSachDai++;
+            }
+        }
+
+        console.log(`Số lượng sách có tên dài hơn 20 ký tự: ${demSachDai}`);
+    </script>
+</body>
+
+</html>

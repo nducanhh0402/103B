@@ -1,49 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Thư Viện Code</title>
 </head>
+
 <body>
     <script>
         let count = 0;
-        while(count<3){
-            let password = prompt("Nhập mật khẩu:");
-            if(password === "admin123"){
-            console.log("Nhập mật khẩu thành công!");
-            break;
+        let isLoginSuccess = false; // Biến cờ để kiểm tra trạng thái đăng nhập
 
-        }else{
-            console.log(`Sai mật khẩu lần ${count +1}`);
-            count++;
-        }
-    }
-        if (count ===3){
-            console.log(" Hệ thống đã bị khóa");
-        }else{
-            choice = +prompt (`
-            1. Nhập lô sách mới
-            2. Vẽ sơ đồ kệ sách
-            3.Thoát
-            `);
-            switch (choice){
-                case 1:
-                    //; 
+        // --- PHẦN 1: ĐĂNG NHẬP ---
+        while (count < 3) {
+            let password = prompt(`Nhập mật khẩu (Lần thử ${count + 1}):`);
+            if (password === "admin123") {
+                console.log("Đăng nhập thành công!");
+                alert("Đăng nhập thành công!"); // Thêm alert cho dễ thấy
+                isLoginSuccess = true;
                 break;
-                case 2:;
-                break;
-                case 3:
-                    console.log("Thoát chương trình");
-                    break;
-                default:
-                    console.log("Lựa chọn không hợp lệ!");
-                    break;
-
+            } else {
+                console.log(`Sai mật khẩu lần ${count + 1}`);
+                count++;
             }
-
-           
         }
-    </script>   
+
+        // --- PHẦN 2: MENU CHỨC NĂNG ---
+        if (count === 3 && !isLoginSuccess) {
+            console.log("Hệ thống đã bị khóa");
+            alert("Hệ thống bị khóa do nhập sai quá 3 lần!");
+        } else {
+            // [QUAN TRỌNG] Tạo biến để duy trì vòng lặp Menu
+            let isRunning = true;
+
+            // Vòng lặp While để giữ Menu luôn hiện
+            while (tiepTucChay === true) {
+                let choice = +prompt(
+                    "CHỌN CHỨC NĂNG:\n" +
+                    "1. Nhập lô sách mới (Vòng lặp For)\n" +
+                    "2. Vẽ sơ đồ kệ sách (Vòng lặp lồng nhau)\n" +
+                    "3. Thoát"
+                );
+
+                switch (choice) {
+                    case 1:
+                        // --- CHỨC NĂNG 1: Dùng vòng lặp FOR ---
+                        let soLuong = +prompt("Bạn muốn nhập mấy cuốn?");
+                        let tongTien = 0;
+
+                        for (let i = 1; i <= soLuong; i++) {
+                            let gia = +prompt("Nhập giá cuốn thứ " + i + ":");
+
+                            // Nếu giá sai, dùng continue để bỏ qua lần này
+                            if (gia <= 0) {
+                                console.log("Giá không hợp lệ, bỏ qua cuốn thứ " + i);
+                                continue;
+                            }
+
+                            tongTien = tongTien + gia;
+                        }
+                        console.log("Tổng tiền đợt nhập này là: " + tongTien);
+                        alert("Tổng tiền: " + tongTien);
+                        break;
+
+                    case 2:
+                        // --- CHỨC NĂNG 2: Dùng Nested Loop (Lồng nhau) ---
+                        console.log("--- SƠ ĐỒ KỆ SÁCH ---");
+
+                        // Vòng lặp ngoài: Khu vực
+                        for (let khu = 1; khu <= 3; khu++) {
+                            // Vòng lặp trong: Kệ sách
+                            for (let ke = 1; ke <= 5; ke++) {
+
+                                // Kiểm tra vị trí đang sửa chữa
+                                if (khu === 2 && ke === 3) {
+                                    console.log("Khu " + khu + " - Kệ " + ke + ": (ĐANG SỬA)");
+                                    continue; // Bỏ qua lệnh in bên dưới
+                                }
+
+                                console.log("Khu " + khu + " - Kệ " + ke + ": [Trống]");
+                            }
+                        }
+                        alert("Đã vẽ sơ đồ trong Console (F12)");
+                        break;
+
+                    case 3:
+                        // --- CHỨC NĂNG 3: Thoát ---
+                        console.log("Thoát chương trình");
+                        tiepTucChay = false; // Đổi thành false để vòng lặp While bên ngoài dừng lại
+                        break;
+
+                    default:
+                        alert("Lựa chọn không hợp lệ!");
+                        break;
+                }
+            }
+        }
+    </script>
 </body>
+
 </html>

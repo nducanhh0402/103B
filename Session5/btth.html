@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let books = ["Nha Gia Kim", "Dac Nhan Tam", "Tuan Lam Viec 4 Gio"];
+        let choice;
+
+        while (choice !== 0) {
+            choice = parseInt(prompt(
+                `--- THƯ VIỆN KHOA HỌC ---
+        1. Xem danh sách
+        2. Nhập sách mới
+        3. Mượn sách (Xóa)
+        4. Sửa tên sách
+        5. Sắp xếp kệ
+        0. Thoát
+        Bạn chọn:`
+            ));
+
+            switch (choice) {
+                case 1:
+                    console.log(`=> Danh sách h
+                    let newBook = prompt(`Nhập tên cuốn sách mới:`);
+                    books.push(newBook);iện tại (${books.length} cuốn):`);
+                    for (let i = 0; i < books.length; i++) {
+                        console.log(`${i + 1}. ${books[i]}`);
+                    }
+                    break;
+
+                case 2:
+                    console.log(`Đã thêm thành công cuốn sách: ${newBook}`);
+                    break;
+
+                case 3:
+                    let borrowName = prompt(`Nhập tên sách muốn mượn:`);
+                    let borrowIndex = books.indexOf(borrowName);
+
+                    if (borrowIndex !== -1) {
+                        books.splice(borrowIndex, 1);
+                        console.log(`=> Đã cho mượn cuốn '${borrowName}'.`);
+                    } else {
+                        console.log(`=> Lỗi: Không tìm thấy sách ${borrowName}!`);
+                    }
+                    break;
+
+                case 4:
+                    let oldName = prompt(`Nhập tên sách cũ cần sửa:`);
+                    let editIndex = books.indexOf(oldName);
+
+                    if (editIndex !== -1) {
+                        let updateName = prompt(`Nhập tên mới cho cuốn '${oldName}':`);
+                        books[editIndex] = updateName;
+                        console.log(`Đã cập nhật: ${oldName} -> ${updateName}`);
+                    } else {
+                        console.log(`Không tìm thấy sách: ${oldName}`);
+                    }
+                    break;
+
+                case 5:
+                    books.sort();
+                    console.log(`Đã sắp xếp lại kệ sách. Danh sách mới: ${books.join(" - ")}`);
+                    break;
+
+                case 0:
+                    console.log(`Cảm ơn bạn đã sử dụng thư viện!`);
+                    break;  
+
+                default:
+                    console.log(`Lựa chọn ${choice} không hợp lệ, vui lòng chọn lại!`);
+                    break;
+            }
+        }
+    </script>
+</body>
+
+</html>
