@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let hocVien = "Quý, Nam, Lan, Hùng, Nam";
+        let students = hocVien.split(",");
+        console.log("Mảng sau khi tách:", students);
+
+        students.reverse();
+        console.log("Mảng sau khi đảo ngược:", students);
+        // Phương thức này không làm thay đổi mảng gốc
+        
+        if (students.includes("Lan")) {
+            console.log("Tên Lan tồn tại trong mảng");
+        } else {
+            console.log("Tên Lan không tồn tại trong mảng");
+        }
+
+
+    </script>
+</body>
+
+</html>

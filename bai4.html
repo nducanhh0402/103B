@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let n = 4;
+        let arr = ['c', '2', 'd', '3'];
+        let ketQua = "";
+
+        if (n <= 0 || arr.length === 0) {
+            console.log("Không có ký tự số");
+        } else {
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i] >= '0' && arr[i] <= '9') {
+                    ketQua += arr[i] + " ";
+                }
+            }
+
+            if (ketQua === "") {
+                console.log("Không có ký tự số");
+            } else {
+                console.log(ketQua.trim());
+            }
+        }
+    </script>
+</body>
+
+</html>

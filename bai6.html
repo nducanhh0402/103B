@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let n = 5;
+        let arr = ['a', '-2', 'd', '5', 'e'];
+
+        if (n < 0) {
+            console.log("Số lượng phần tử không được âm");
+        } else if (n === 0 || arr.length === 0) {
+            console.log("Mảng không có phần tử");
+        } else {
+            let count = 0;
+            let digits = "";
+
+            for (let i = 0; i < arr.length; i++) {
+                let item = arr[i];
+                if (item !== "" && !isNaN(item)) {
+                    count++;
+                    let itemStr = String(item);
+                    for (let j = 0; j < itemStr.length; j++) {
+                        if (itemStr[j] >= '0' && itemStr[j] <= '9') {
+                            digits += itemStr[j] + " ";
+                        }
+                    }
+                }
+            }
+
+            if (count === 0) {
+                console.log("Không có phần tử nào là số");
+            } else {
+                console.log(count);
+                if (digits !== "") {
+                    console.log(digits.trim());
+                } else {
+                    console.log("Không có ký tự số");
+                }
+            }
+        }
+
+        let inputArr = ["", false, 0, 5, 10, "Hello world!"];
+        let resultArr = [];
+
+        for (let i = 0; i < inputArr.length; i++) {
+            if (inputArr[i]) {
+                resultArr[resultArr.length] = inputArr[i];
+            }
+        }
+
+        console.log(resultArr);
+    </script>
+</body>
+
+</html>

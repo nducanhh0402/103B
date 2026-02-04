@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function demSoAm(n, arr) {
+            if (n < 0) {
+                return "Số lượng phần tử không hợp lệ";
+            }
+
+            if (n === 0 || arr.length === 0) {
+                return "Mảng không có phần tử";
+            }
+
+            let count = 0;
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i] < 0) {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        console.log(demSoAm(5, [1, -2, 5, -1, -9]));
+        console.log(demSoAm(3, [-1.1, 2.2, -2]));
+        console.log(demSoAm(0, []));
+        console.log(demSoAm(-2, []));
+    </script>
+</body>
+
+</html>

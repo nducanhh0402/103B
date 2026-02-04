@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let input2 = [1, 2, 3, 4, 5, 6];
+
+        if (input2.length === 0) {
+            console.log("Không có số lớn nhất");
+        } else {
+            let max = input2[0];
+            let viTri = 0;
+
+            for (let i = 1; i < input2.length; i++) {
+                if (input2[i] > max) {
+                    max = input2[i];
+                    viTri = i;
+                }
+            }
+
+            console.log("Số lớn nhất: " + max);
+            console.log("Vị trí: " + viTri);
+        }
+    </script>
+</body>
+
+</html>

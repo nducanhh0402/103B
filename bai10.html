@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let n = 0;
+        let arr = [];
+        let luaChon;
+
+        while (luaChon !== 0) {
+            console.log("================== MENU ==================");
+            console.log("1. Nhập số phần tử và giá trị các phần tử");
+            console.log("2. In ra giá trị các phần tử đang quản lý");
+            console.log("3. In ra giá trị các phần tử chẵn, tính tổng và sắp xếp giảm dần");
+            console.log("4. In ra giá trị lớn nhất, nhỏ nhất và vị trí của chúng");
+            console.log("5. In ra các số nguyên tố trong mảng và tính tổng");
+            console.log("6. Nhập một số và đếm số lần xuất hiện trong mảng");
+            console.log("7. Thêm một phần tử vào vị trí chỉ định");
+            console.log("8. Xóa một phần tử theo giá trị");
+            console.log("9. Sắp xếp mảng theo thứ tự tăng dần hoặc giảm dần");
+            console.log("10. Kiểm tra dãy Fibonacci và lọc giá trị Truthy");
+            console.log("0. Thoát");
+            console.log("==========================================");
+
+            luaChon = Number(prompt("Lựa chọn của bạn:"));
+
+            if (luaChon === 1) {
+                n = Number(prompt("Nhập số lượng phần tử (n):"));
+                if (n < 0) {
+                    console.log("Số lượng phần tử không được nhỏ hơn 0");
+                    n = 0;
+                } else {
+                    arr = [];
+                    for (let i = 0; i < n; i++) {
+                        arr[i] = prompt("Nhập phần tử thứ " + i + ":");
+                        if (arr[i] !== "" && !isNaN(arr[i])) {
+                            arr[i] = Number(arr[i]);
+                        }
+                    }
+                }
+            } else if (luaChon === 2) {
+                if (arr.length === 0) {
+                    console.log("Mảng không có phần tử nào");
+                } else {
+                    console.log("Mảng hiện tại:", arr);
+                }
+            } else if (luaChon === 3) {
+                let chanArr = [];
+                let tongChan = 0;
+                for (let i = 0; i < arr.length; i++) {
+                    if (typeof arr[i] === "number" && arr[i] % 2 === 0) {
+                        chanArr[chanArr.length] = arr[i];
+                        tongChan += arr[i];
+                    }
+                }
+                for (let i = 0; i < chanArr.length - 1; i++) {
+                    for (let j = i + 1; j < chanArr.length; j++) {
+                        if (chanArr[i] < chanArr[j]) {
+                            let temp = chanArr[i];
+                            chanArr[i] = chanArr[j];
+                            chanArr[j] = temp;
+                        }
+                    }
+                }
+                console.log("Các số chẵn (giảm dần):", chanArr);
+                console.log("Tổng các số chẵn:", tongChan);
+            } else if (luaChon === 4) {
+                if (arr.length === 0) {
+                    console.log("Mảng rỗng");
+                } else {
+                    let max = arr[0], min = arr[0];
+                    let viTriMax = [0], viTriMin = [0];
+                    for (let i = 1; i < arr.length; i++) {
+                        if (arr[i] > max) {
+                            max = arr[i];
+                            viTriMax = [i];
+                        } else if (arr[i] === max) {
+                            viTriMax[viTriMax.length] = i;
+                        }
+                        if (arr[i] < min) {
+                            min = arr[i];
+                            viTriMin = [i];
+                        } else if (arr[i] === min) {
+                            viTriMin[viTriMin.length] = i;
+                        }
+                    }
+                    console.log("Max: " + max + " tại vị trí " + viTriMax);
+                    console.log("Min: " + min + " tại vị trí " + viTriMin);
+                }
+            } else if (luaChon === 5) {
+                let tongSNT = 0;
+                let sntStr = "";
+                for (let i = 0; i < arr.length; i++) {
+                    let num = arr[i];
+                    if (typeof num === "number" && num > 1) {
+                        let laSNT = true;
+                        for (let j = 2; j * j <= num; j++) {
+                            if (num % j === 0) {
+                                laSNT = false;
+                                break;
+                            }
+                        }
+                        if (laSNT) {
+                            sntStr += num + " ";
+                            tongSNT += num;
+                        }
+                    }
+                }
+                console.log("Các số nguyên tố: " + sntStr);
+                console.log("Tổng số nguyên tố: " + tongSNT);
+            } else if (luaChon === 6) {
+                let tim = Number(prompt("Nhập số cần đếm:"));
+                let dem = 0;
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i] === tim) dem++;
+                }
+                console.log("Số " + tim + " xuất hiện " + dem + " lần");
+            } else if (luaChon === 7) {
+                let giaTri = prompt("Nhập giá trị cần thêm:");
+                if (!isNaN(giaTri) && giaTri !== "") giaTri = Number(giaTri);
+                let viTri = Number(prompt("Nhập vị trí chèn (0 - " + arr.length + "):"));
+                for (let i = arr.length; i > viTri; i--) {
+                    arr[i] = arr[i - 1];
+                }
+                arr[viTri] = giaTri;
+            } else if (luaChon === 8) {
+                let giaTriXoa = Number(prompt("Nhập giá trị cần xóa:"));
+                let mảngMới = [];
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i] !== giaTriXoa) {
+                        mảngMới[mảngMới.length] = arr[i];
+                    }
+                }
+                arr = mảngMới;
+            } else if (luaChon === 9) {
+                let kieu = prompt("Nhập 'T' để tăng, 'G' để giảm:");
+                for (let i = 0; i < arr.length - 1; i++) {
+                    for (let j = i + 1; j < arr.length; j++) {
+                        let dk = (kieu === 'T') ? arr[i] > arr[j] : arr[i] < arr[j];
+                        if (dk) {
+                            let tam = arr[i];
+                            arr[i] = arr[j];
+                            arr[j] = tam;
+                        }
+                    }
+                }
+                console.log("Mảng sau khi sắp xếp:", arr);
+            } else if (luaChon === 10) {
+                let laFibo = true;
+                if (arr.length < 3) laFibo = false;
+                else {
+                    for (let i = 2; i < arr.length; i++) {
+                        if (arr[i] !== arr[i - 1] + arr[i - 2]) {
+                            laFibo = false;
+                            break;
+                        }
+                    }
+                }
+                console.log(laFibo ? "Là dãy số fibonacci" : "Không phải dãy số fibonacci");
+
+                let truthyArr = [];
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i]) truthyArr[truthyArr.length] = arr[i];
+                }
+                console.log("Mảng sau khi lọc truthy:", truthyArr);
+            }
+        }
+    </script>
+</body>
+
+</html>

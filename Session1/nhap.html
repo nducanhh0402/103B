@@ -1,0 +1,55 @@
+// --- CÂU 1: Biến đổi và Kiểm tra dữ liệu ---
+console.log("--- CÂU 1 ---");
+
+// Dữ liệu đầu vào
+let danhSachChuoi = "Quý, Nam, Lan, Hùng, Nam";
+
+// 1. Chuyển chuỗi thành mảng (Sử dụng split)
+// Ta tách chuỗi dựa trên dấu phẩy và khoảng trắng ", "
+let students = danhSachChuoi.split(", ");
+console.log("Mảng sau khi tách:", students);
+
+// 2. Đảo ngược thứ tự (Sử dụng reverse)
+// Lưu ý: Phương thức reverse() CÓ làm thay đổi mảng gốc.
+students.reverse();
+console.log("Mảng sau khi đảo ngược:", students);
+
+// 3. Kiểm tra tên "Lan" (Sử dụng includes)
+if (students.includes("Lan")) {
+    console.log("Tên Lan tồn tại trong mảng");
+} else {
+    console.log("Tên Lan không tồn tại trong mảng");
+}
+
+// 4. Tìm vị trí đầu tiên của tên "Nam" (Sử dụng indexOf)
+// Lưu ý: Do mảng đã bị đảo ngược ở bước 2, vị trí index sẽ tính theo mảng mới.
+let viTriNam = students.indexOf("Nam");
+console.log(`Vị trí (index) đầu tiên của tên 'Nam' trong mảng đảo ngược là: ${viTriNam}`);
+
+
+// --- CÂU 2: So sánh hiệu quả vòng lặp ---
+console.log("\n--- CÂU 2 ---");
+
+// Dữ liệu đầu vào
+let prices = [100, 200, 300, 400];
+
+// 1. Vòng lặp for...of: Duyệt và in ra GIÁ TRỊ (value)
+console.log("Duyệt bằng for...of (Giá trị):");
+for (let price of prices) {
+    console.log(price);
+}
+
+// 2. Vòng lặp for...in: Duyệt và in ra VỊ TRÍ (index/key)
+console.log("Duyệt bằng for...in (Index):");
+for (let index in prices) {
+    console.log(index);
+}
+
+// 3. Vòng lặp for truyền thống: Tính tổng phần tử ở index chẵn (0, 2,...)
+let total = 0;
+// i += 2 để bước nhảy là 2, giúp duyệt các số chẵn 0, 2, 4...
+for (let i = 0; i < prices.length; i += 2) {
+    total += prices[i];
+}
+console.log(`Tổng các phần tử ở vị trí index chẵn là: ${total}`);
+// Giải thích: Index 0 (100) + Index 2 (300) = 400
