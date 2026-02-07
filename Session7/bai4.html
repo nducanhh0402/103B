@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <Script>
+        let players = [
+            "P001-Nguyễn Văn A-Thủ môn",
+            "P002-Trần Thị B-Hậu vệ",
+            "P003-Lê Văn C-Hậu vệ",
+            "P004-Phạm Văn D-Tiền vệ",
+            "P005-Hoàng Thị E-Tiền đạo",
+            "P006-Vũ Minh F-Tiền đạo",
+            "P007-Đặng Văn G-Thủ môn",
+        ];
+
+        function printTeamRoster() {
+            for (let i = 0; i < players.length; i++) {
+                let thongTin = players[i].split("-");
+                console.log((i + 1) + " | " + thongTin[0] + " | " + thongTin[1] + " | " + thongTin[2]);
+            }
+        }
+
+        function countPlayerByPostion(playersList) {
+            let thongKe = {};
+            for (let i = 0; i < playersList.length; i++) {
+                let viTri = playersList[i].split("-")[2];
+                if (thongKe[viTri] === undefined) {
+                    thongKe[viTri] = 1;
+                } else {
+                    thongKe[viTri] = thongKe[viTri] + 1;
+                }
+            }
+            return thongKe;
+        }
+
+        function hasGoalkeeper() {
+            for (let i = 0; i < players.length; i++) {
+                if (players[i].indexOf("Thủ môn") !== -1) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        printTeamRoster();
+        console.log(countPlayerByPostion(players));
+        console.log(hasGoalkeeper());
+    </Script>
+</body>
+
+</html>
