@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const squad = [
+            ["Nguyen Van A", 10, "FW"],
+            ["Tran Van B", 5, "MF"],
+            ["Le Van C", 2, "DF"],
+            ["Pham Van D", 12, "FW"],
+            ["Hoang Van E", 0, "GK"],
+            ["Dang Van F", 7, "MF"]
+        ];
+
+        function quanLyDoiBong() {
+            let luaChon;
+
+            do {
+                luaChon = prompt(
+                    "--- QUẢN LÝ ĐỘI BÓNG ---\n" +
+                    "1. Xem danh sách\n" +
+                    "2. Tìm kiếm (Find)\n" +
+                    "3. Lọc vị trí (Filter)\n" +
+                    "4. Tổng bàn thắng (Reduce)\n" +
+                    "5. Kiểm tra hiệu suất (Some/Every)\n" +
+                    "0. Thoát\n\n" + 
+                    "Bạn chọn (0-5):"
+                );
+
+                switch (luaChon) {
+                    case '1':
+                        console.log("=> DANH SÁCH CẦU THỦ:");
+                        squad.forEach(player => {
+                            console.log(`- ${player[0]} (${player[2]}): ${player[1]} bàn thắng`);
+                        });
+                        break;
+
+                    case '2':
+                        const tenCanTim = prompt("Nhập tên cầu thủ cần tìm:");
+                        const ketQuaTimKiem = squad.find(player => player[0].toLowerCase().includes(tenCanTim.toLowerCase()));
+
+                        if (ketQuaTimKiem) {
+                            console.log(`=> TÌM THẤY: Tên: ${ketQuaTimKiem[0]} | Vị trí: ${ketQuaTimKiem[2]} | Số bàn: ${ketQuaTimKiem[1]}`);
+                        } else {
+                            console.log(`=> LỖI: Không tìm thấy cầu thủ mang tên "${tenCanTim}".`);
+                        }
+                        break;
+
+                    case '3':
+                        const viTriCanLoc = prompt("Nhập vị trí muốn lọc (FW/MF/DF/GK):").toUpperCase();
+                        console.log(`=> KẾT QUẢ LỌC (${viTriCanLoc}):`);
+                        const danhSachLoc = squad.filter(player => player[2] === viTriCanLoc);
+
+                        if (danhSachLoc.length > 0) {
+                            danhSachLoc.forEach(player => {
+                                console.log(`- ${player[0]} (${player[1]} bàn)`);
+                            });
+                        } else {
+                            console.log("- Không có cầu thủ nào ở vị trí này.");
+                        }
+                        break;
+
+                    case '4':
+                        const tongBanThang = squad.reduce((tong, player) => tong + player[1], 0);
+                        console.log(`=> Tổng số bàn thắng hiện tại là: ${tongBanThang} bàn`);
+                        break;
+
+                        case '5':
+                        console.log("=> KIỂM TRA HIỆU SUẤT:");
+                        const coCauThuChuaGhiBan = squad.some(player => player[1] === 0);
+                        if (coCauThuChuaGhiBan) {
+                            console.log("- Có cầu thủ chưa ghi bàn.");
+                        }
+
+                        const tatCaDaGhiBan = squad.every(player => player[1] > 0);
+                        if (tatCaDaGhiBan) {
+                            console.log("- Tất cả cầu thủ đều đã ghi bàn.");
+                        } else if (!coCauThuChuaGhiBan) {
+                            console.log("- Chưa phải tất cả cầu thủ đều ghi bàn.");
+                        }
+                        break;
+
+                    case '0':
+                        console.log("=> Hẹn gặp lại!");
+                        break;
+
+                    default:
+                        if (luaChon !== null) {
+                            console.log("=> Lựa chọn không hợp lệ. Vui lòng thử lại!");
+                        }
+                        break;
+                }
+
+                if (luaChon !== '0' && luaChon !== null) {
+                    console.log("------------------------");
+                }
+
+            } while (luaChon !== '0' && luaChon !== null);
+        }
+
+        quanLyDoiBong();
+    </script>
+</body>
+
+</html>
