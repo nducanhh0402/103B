@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const players = [
+            "Messi - Forward",
+            "Ronaldo - Forward",
+            "Neymar - Forward",
+            "De Bruyne - Midfielder",
+            "Kante - Midfielder",
+            "Van Dijk - Defender",
+            "Alisson - Goalkeeper"
+        ];
+
+        const playerNames = ["Messi", "Ronaldo", "Neymar", "De Bruyne", "Kante", "Van Dijk", "Alisson"];
+
+        function displayPlayers(playersArray) {
+            playersArray.forEach(player => console.log(player));
+        }
+
+        function getUpperNames(namesArray) {
+            return namesArray.map(name => name.toUpperCase());
+        }
+
+        function filterPlayersByPosition(position, playersArray) {
+            return playersArray.filter(player => player.endsWith(position));
+        }
+
+        displayPlayers(players);
+        console.log(getUpperNames(playerNames));
+        console.log(filterPlayersByPosition("Midfielder", players));
+        console.log(filterPlayersByPosition("Forward", players));
+    </script>
+</body>
+
+</html>

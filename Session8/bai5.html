@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const playerNames = ["Messi", "Ronaldo", "Neymar", "De Bruyne", "Kante", "Van Dijk", "Alisson"];
+
+        const players = [
+            "Messi - Forward",
+            "Ronaldo - Forward",
+            "Neymar - Forward",
+            "De Bruyne - Midfielder",
+            "Kante - Midfielder",
+            "Van Dijk - Defender",
+            "Alisson - Goalkeeper"
+        ];
+
+        const playersWithStats = [
+            "Messi - Forward - 25 - 15",
+            "Ronaldo - Forward - 30 - 10",
+            "Neymar - Forward - 18 - 20",
+            "De Bruyne - Midfielder - 8 - 25",
+            "Kante - Midfielder - 2 - 5",
+            "Van Dijk - Defender - 5 - 3",
+            "Alisson - Goalkeeper - 0 - 1"
+        ];
+
+        function getUpperNames(namesArray) {
+            return namesArray.map(name => name.toUpperCase());
+        }
+
+        function filterPlayersByPosition(position, playersArray) {
+            return playersArray.filter(player => player.endsWith(position));
+        }
+
+        function getReversedNames(playersArray) {
+            return playersArray
+                .map(player => player.split(" - ")[0])
+                .reverse();
+        }
+
+        function reportTopPerformers(minPerformance, playersArray) {
+            const topPerformers = playersArray
+                .map(player => {
+                    const parts = player.split(" - ");
+                    const name = parts[0];
+                    const performance = parseInt(parts[2]) + parseInt(parts[3]);
+                    return { name, performance };
+                })
+                .filter(p => p.performance >= minPerformance);
+
+            topPerformers.forEach(p => console.log(`${p.name}: ${p.performance}`));
+
+            const totalPerformance = topPerformers.reduce((sum, p) => sum + p.performance, 0);
+
+            console.log(`Tổng hiệu suất: ${totalPerformance}`);
+            return totalPerformance;
+        }
+
+        console.log("--- Upper Names ---");
+        console.log(getUpperNames(playerNames));
+
+        console.log("\n--- Filter Midfielders ---");
+        console.log(filterPlayersByPosition("Midfielder", players));
+
+        console.log("\n--- Reversed Names ---");
+        console.log(getReversedNames(playersWithStats));
+
+        console.log("\n--- Report Top Performers (min 30) ---");
+        reportTopPerformers(30, playersWithStats);
+    </script>
+</body>
+
+</html>

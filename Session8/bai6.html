@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const players = [
+            "Messi - Forward - 25 - 15 - 34",
+            "Ronaldo - Forward - 30 - 10 - 38",
+            "Neymar - Forward - 18 - 20 - 32",
+            "De Bruyne - Midfielder - 8 - 25 - 35",
+            "Kante - Midfielder - 2 - 5 - 36",
+            "Van Dijk - Defender - 5 - 3 - 33",
+            "Alisson - Goalkeeper - 0 - 1 - 37"
+        ];
+
+        function displayPlayers(playersArray) {
+            playersArray.forEach(player => console.log(player));
+        }
+
+        function getUpperNames(namesArray) {
+            return namesArray.map(name => name.toUpperCase());
+        }
+
+        function filterPlayersByPosition(position, playersArray) {
+            return playersArray.filter(player => player.includes(position));
+        }
+
+        function getReversedNames(playersArray) {
+            return playersArray
+                .map(player => player.split(" - ")[0])
+                .reverse();
+        }
+
+        function reportTopPerformers(minPerformance, playersArray) {
+            const topPerformers = playersArray
+                .map(player => {
+                    const [name, , goals, assists] = player.split(" - ");
+                    const performance = parseInt(goals) + parseInt(assists);
+                    return { name, performance };
+                })
+                .filter(p => p.performance >= minPerformance);
+
+            topPerformers.forEach(p => console.log(`${p.name}: ${p.performance}`));
+
+            const totalPerformance = topPerformers.reduce((sum, p) => sum + p.performance, 0);
+            console.log(`Tổng hiệu suất: ${totalPerformance}`);
+            return totalPerformance;
+        }
+
+        function reportByPosition(playersArray) {
+            console.log("BÁO CÁO HIỆU SUẤT THEO VỊ TRÍ");
+
+            const positions = ["Forward", "Midfielder", "Defender", "Goalkeeper"];
+
+            const groupedData = positions.map(pos => {
+                const group = playersArray
+                    .map(p => {
+                        const [name, position, goals, assists, matches] = p.split(" - ");
+                        return {
+                            position,
+                            goals: parseInt(goals),
+                            assists: parseInt(assists),
+                            matches: parseInt(matches)
+                        };
+                    })
+                    .filter(p => p.position === pos);
+
+                if (group.length === 0) return null;
+
+                const stats = group.reduce((acc, p) => ({
+                    count: acc.count + 1,
+                    totalGoals: acc.totalGoals + p.goals,
+                    totalAssists: acc.totalAssists + p.assists,
+                    totalMatches: acc.totalMatches + p.matches
+                }), { count: 0, totalGoals: 0, totalAssists: 0, totalMatches: 0 });
+
+                const avg = ((stats.totalGoals + stats.totalAssists) / stats.totalMatches).toFixed(2);
+
+                return { pos, ...stats, avg };
+            }).filter(res => res !== null);
+
+            groupedData.forEach(g => {
+                console.log(`\n${g.pos}:`);
+                console.log(`- Số cầu thủ: ${g.count}`);
+                console.log(`- Tổng bàn thắng: ${g.totalGoals}`);
+                console.log(`- Tổng kiến tạo: ${g.totalAssists}`);
+                console.log(`- Tổng số trận: ${g.totalMatches}`);
+                console.log(`- Trung bình hiệu suất/trận: ${g.avg}`);
+            });
+
+            const totalTeamGoals = playersArray.reduce((sum, p) => sum + parseInt(p.split(" - ")[2]), 0);
+            console.log("\n--------------------");
+            console.log(`Tổng bàn thắng toàn đội : ${totalTeamGoals}`);
+        }
+
+        // Thực thi thử nghiệm
+        reportTopPerformers(30, players);
+        console.log("\n--- Báo cáo chi tiết ---");
+        reportByPosition(players);
+    </script>
+</body>
+
+</html>

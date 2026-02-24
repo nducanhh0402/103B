@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const playerNames = [
+            "Messi",
+            "Ronaldo",
+            "Neymar",
+            "De Bruyne",
+            "Kante",
+            "Van Dijk",
+            "Alisson"
+        ];
+
+        const players = [
+            "Messi - Forward",
+            "Ronaldo - Forward",
+            "Neymar - Forward",
+            "De Bruyne - Midfielder",
+            "Kante - Midfielder",
+            "Van Dijk - Defender",
+            "Alisson - Goalkeeper"
+        ];
+
+        const playersWithGoals = [
+            "Messi - Forward - 25",
+            "Ronaldo - Forward - 30",
+            "Neymar - Forward - 18",
+            "De Bruyne - Midfielder - 8",
+            "Kante - Midfielder - 2",
+            "Van Dijk - Defender - 5",
+            "Alisson - Goalkeeper - 0"
+        ];
+
+        function getUpperNames(namesArray) {
+            return namesArray.map(name => name.toUpperCase());
+        }
+
+        function filterPlayersByPosition(position, playersArray) {
+            return playersArray.filter(player => player.includes(position));
+        }
+
+        function getReversedNames(playersArray) {
+            return playersArray
+                .map(player => player.split(" - ")[0])
+                .reverse();
+        }
+
+        console.log(getUpperNames(playerNames));
+        console.log(filterPlayersByPosition("Midfielder", players));
+        console.log(getReversedNames(playersWithGoals));
+    </script>
+</body>
+
+</html>
