@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let danhSach = [];
+        function quanLySinhVien() {
+            while (true) {
+                let menu = "1. Nhập danh sách\n2. Hiển thị\n3. Tìm sinh viên\n4. Xóa sinh viên\n5. Thoát";
+                let chon = prompt(menu);
+
+                if (chon === "5" || chon === null) break;
+
+                if (chon === "1") {
+                    let n = Number(prompt("Nhập số lượng sinh viên:"));
+                    for (let i = 0; i < n; i++) {
+                        danhSach.push(prompt("Nhập tên sinh viên thứ " + (i + 1) + ":"));
+                    }
+                } else if (chon === "2") {
+                    let ketQua = "";
+                    for (let i = 0; i < danhSach.length; i++) {
+                        ketQua += (i + 1) + ". " + danhSach[i] + "\n";
+                    }
+                    alert(ketQua || "Danh sách trống");
+                } else if (chon === "3") {
+                    let tenCanTim = prompt("Nhập tên cần tìm:");
+                    let timThay = false;
+                    for (let i = 0; i < danhSach.length; i++) {
+                        if (danhSach[i] === tenCanTim) {
+                            alert("Đã tìm thấy: " + danhSach[i]);
+                            timThay = true;
+                            break;
+                        }
+                    }
+                    if (!timThay) alert("Sinh viên không có trong danh sách");
+                } else if (chon === "4") {
+                    let tenCanXoa = prompt("Nhập tên cần xóa:");
+                    let xoaXong = false;
+                    for (let i = 0; i < danhSach.length; i++) {
+                        if (danhSach[i] === tenCanXoa) {
+                            danhSach.splice(i, 1);
+                            alert("Đã xóa sinh viên đầu tiên tìm thấy");
+                            xoaXong = true;
+                            break;
+                        }
+                    }
+                    if (!xoaXong) alert("Không tìm thấy sinh viên để xóa");
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

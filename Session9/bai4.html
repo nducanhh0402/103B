@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let ds = [];
+        function qlsv() {
+            while (true) {
+                let c = prompt("1. Nhập\n2. Hiện\n3. Tìm\n4. Xóa\n5. Thoát");
+                if (c === "5" || c === null) break;
+                if (c === "1") {
+                    let n = Number(prompt("Số lượng:"));
+                    for (let i = 0; i < n; i++) {
+                        ds.push(prompt("Tên SV " + (i + 1) + ":"));
+                    }
+                } else if (c === "2") {
+                    let s = "";
+                    for (let i = 0; i < ds.length; i++) {
+                        s += (i + 1) + ". " + ds[i] + "\n";
+                    }
+                    alert(s || "Trống");
+                } else if (c === "3") {
+                    let t = prompt("Tên cần tìm:");
+                    let th = false;
+                    for (let i = 0; i < ds.length; i++) {
+                        if (ds[i] === t) {
+                            alert("Tìm thấy: " + ds[i]);
+                            th = true;
+                            break;
+                        }
+                    }
+                    if (!th) alert("Sinh viên không có trong danh sách");
+                } else if (c === "4") {
+                    let t = prompt("Tên cần xóa:");
+                    let x = false;
+                    for (let i = 0; i < ds.length; i++) {
+                        if (ds[i] === t) {
+                            ds.splice(i, 1);
+                            alert("Đã xóa");
+                            x = true;
+                            break;
+                        }
+                    }
+                    if (!x) alert("Không thấy");
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

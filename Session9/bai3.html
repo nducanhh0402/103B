@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let dsSV = [];
+let dsSo = [];
+
+function ungDungTongHop() {
+    while (true) {
+        let menu = "--- HỆ THỐNG TỔNG HỢP ---\n" +
+                   "1. Tính toán 2 số\n" +
+                   "2. Quản lý sinh viên\n" +
+                   "3. Tính hình học\n" +
+                   "4. Xử lý số nguyên\n" +
+                   "5. Chia mảng con\n" +
+                   "6. Kiểm tra cấp số cộng\n" +
+                   "7. Tìm số thiếu\n" +
+                   "8. Số lớn nhất từ các chữ số\n" +
+                   "9. Sắp xếp số chẵn\n" +
+                   "10. Thoát";
+        
+        let chon = prompt(menu);
+
+        if (chon === "10" || chon === null) break;
+
+        if (chon === "1") {
+            let p = prompt("1. Cộng\n2. Trừ\n3. Nhân\n4. Chia");
+            let a = Number(prompt("Số thứ nhất:"));
+            let b = Number(prompt("Số thứ hai:"));
+            if (p === "1") alert(a + b);
+            else if (p === "2") alert(a - b);
+            else if (p === "3") alert(a * b);
+            else if (p === "4") alert(b !== 0 ? a / b : "Lỗi chia cho 0");
+        } 
+        else if (chon === "2") {
+            let p = prompt("1. Nhập danh sách\n2. Hiển thị\n3. Tìm kiếm\n4. Xóa");
+            if (p === "1") {
+                let n = Number(prompt("Số lượng sinh viên:"));
+                for (let i = 0; i < n; i++) dsSV.push(prompt("Nhập tên đầy đủ SV " + (i + 1)));
+            } else if (p === "2") {
+                let s = "";
+                for (let i = 0; i < dsSV.length; i++) s += (i + 1) + ". " + dsSV[i] + "\n";
+                alert(s || "Danh sách trống");
+            } else if (p === "3") {
+                let t = prompt("Nhập tên cần tìm:");
+                let f = false;
+                for (let x of dsSV) if (x === t) { alert("Tìm thấy: " + x); f = true; break; }
+                if (!f) alert("sinh viên không có trong danh sách");
+            } else if (p === "4") {
+                let t = prompt("Nhập tên cần xóa:");
+                for (let i = 0; i < dsSV.length; i++) {
+                    if (dsSV[i] === t) { dsSV.splice(i, 1); alert("Đã xóa sinh viên đầu tiên"); break; }
+                }
+            }
+        }
+        else if (chon === "3") {
+            let p = prompt("1. S tròn\n2. C tròn\n3. S chữ nhật\n4. C chữ nhật");
+            if (p === "1" || p === "2") {
+                let r = Number(prompt("Bán kính:"));
+                alert(p === "1" ? 3.14 * r * r : 2 * 3.14 * r);
+            } else {
+                let d = Number(prompt("Dài:"));
+                let r = Number(prompt("Rộng:"));
+                alert(p === "3" ? d * r : (d + r) * 2);
+            }
+        }
+        else if (chon === "4") {
+            let p = prompt("1. Nhập số\n2. Trung bình cộng\n3. Chẵn lớn nhất\n4. Lẻ nhỏ nhất");
+            if (p === "1") {
+                let n = Number(prompt("Số lượng:"));
+                for (let i = 0; i < n; i++) dsSo.push(Number(prompt("Số " + (i + 1))));
+            } else if (p === "2") {
+                let t = 0;
+                for (let x of dsSo) t += x;
+                alert(dsSo.length > 0 ? t / dsSo.length : 0);
+            } else if (p === "3") {
+                let m = -Infinity;
+                for (let x of dsSo) if (x % 2 === 0 && x > m) m = x;
+                alert(m === -Infinity ? "Không có số chẵn" : m);
+            } else if (p === "4") {
+                let m = Infinity;
+                for (let x of dsSo) if (x % 2 !== 0 && x < m) m = x;
+                alert(m === Infinity ? "Không có số lẻ" : m);
+            }
+        }
+        else if (chon === "5") {
+            let inp = prompt("Nhập mảng (VD: 1,2,3,4,5,6,7,8):");
+            let n = Number(prompt("Kích thước n:"));
+            if (!inp || isNaN(n) || inp === "abc") alert("dữ liệu không hợp lệ");
+            else {
+                let m = inp.split(",");
+                let kq = [];
+                for (let i = 0; i < m.length; i += n) kq.push(m.slice(i, i + n));
+                alert(JSON.stringify(kq));
+            }
+        }
+        else if (chon === "6") {
+            let inp = prompt("Nhập mảng (VD: 2,4,6,8):");
+            if (!inp || inp === "abc") alert("dữ liệu không hợp lệ");
+            else {
+                let m = inp.split(",").map(Number);
+                let d = m[1] - m[0];
+                let ok = true;
+                for (let i = 0; i < m.length - 1; i++) if (m[i+1] - m[i] !== d) { ok = false; break; }
+                alert(ok ? "TRUE" : "FALSE");
+            }
+        }
+        else if (chon === "7") {
+            let inp = prompt("Nhập dãy thiếu (VD: 1,2,3,5):");
+            if (!inp || inp === "abc") alert("dữ liệu không hợp lệ");
+            else {
+                let m = inp.split(",").map(Number);
+                for (let i = 0; i < m.length - 1; i++) {
+                    if (m[i+1] !== m[i] + 1) { alert("Số thiếu: " + (m[i] + 1)); break; }
+                }
+            }
+        }
+        else if (chon === "8") {
+            let n = prompt("Nhập số:");
+            if (isNaN(n) || n.includes("h") || n.includes("t")) alert("dữ liệu không hợp lệ");
+            else alert(n.split("").sort((a,b) => b-a).join(""));
+        }
+        else if (chon === "9") {
+            let inp = prompt("Nhập mảng (VD: 5,8,6,3,4,2,7):");
+            if (!inp || inp === "abc") alert("dữ liệu không hợp lệ");
+            else {
+                let m = inp.split(",").map(Number);
+                let chan = m.filter(x => x % 2 === 0).sort((a, b) => a - b);
+                let j = 0;
+                let kq = m.map(x => x % 2 === 0 ? chan[j++] : x);
+                alert(JSON.stringify(kq));
+            }
+        }
+    }
+}
+
+ungDungTongHop();
+    </script>
+</body>
+</html>

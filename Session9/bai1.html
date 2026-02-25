@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function mayTinh() {
+            while (true) {
+                let luaChon = prompt("1. Cộng\n2. Trừ\n3. Nhân\n4. Chia\n5. Thoát");
+
+                if (luaChon === "5" || luaChon === null) {
+                    break;
+                }
+
+                let so1 = Number(prompt("Nhập số thứ nhất:"));
+                let so2 = Number(prompt("Nhập số thứ hai:"));
+
+                if (isNaN(so1) || isNaN(so2)) {
+                    alert("Lỗi: Bạn phải nhập vào là số, không được nhập chữ!");
+                    continue;
+                }
+
+                if (luaChon === "1") {
+                    alert("Kết quả: " + (so1 + so2));
+                } else if (luaChon === "2") {
+                    alert("Kết quả: " + (so1 - so2));
+                } else if (luaChon === "3") {
+                    alert("Kết quả: " + (so1 * so2));
+                } else if (luaChon === "4") {
+                    if (so2 === 0) {
+                        alert("Không thể chia cho số 0");
+                    } else {
+                        alert("Kết quả: " + (so1 / so2));
+                    }
+                } else {
+                    alert("Lựa chọn không hợp lệ!");
+                }
+            }
+        }
+
+        mayTinh();
+    </script>
+</body>
+
+</html>

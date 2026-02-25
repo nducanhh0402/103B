@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let danhSachSV = [];
+
+        function quanLySinhVien() {
+            while (true) {
+                let menu = "--- QUẢN LÝ SINH VIÊN ---\n" +
+                    "1. Nhập danh sách sinh viên\n" +
+                    "2. Hiển thị danh sách sinh viên\n" +
+                    "3. Tìm sinh viên theo tên\n" +
+                    "4. Xóa sinh viên khỏi danh sách\n" +
+                    "5. Thoát";
+
+                let luaChon = prompt(menu);
+
+                if (luaChon === "5" || luaChon === null) break;
+
+                if (luaChon === "1") {
+                    let n = Number(prompt("Bạn muốn nhập bao nhiêu sinh viên?"));
+                    for (let i = 0; i < n; i++) {
+                        let ten = prompt("Nhập họ tên sinh viên thứ " + (i + 1) + ":");
+                        danhSachSV.push(ten);
+                    }
+                }
+
+                else if (luaChon === "2") {
+                    if (danhSachSV.length === 0) {
+                        alert("Danh sách đang trống!");
+                    } else {
+                        let hienThi = "Danh sách sinh viên:\n";
+                        for (let i = 0; i < danhSachSV.length; i++) {
+                            hienThi += (i + 1) + ". " + danhSachSV[i] + "\n";
+                        }
+                        alert(hienThi);
+                    }
+                }
+
+                else if (luaChon === "3") {
+                    let tenCanTim = prompt("Nhập tên sinh viên cần tìm:");
+                    let timThay = false;
+                    for (let i = 0; i < danhSachSV.length; i++) {
+                        if (danhSachSV[i] === tenCanTim) {
+                            alert("Tìm thấy sinh viên: " + danhSachSV[i]);
+                            timThay = true;
+                            break;
+                        }
+                    }
+                    if (timThay === false) {
+                        alert("Sinh viên không có trong danh sách");
+                    }
+                }
+
+                else if (luaChon === "4") {
+                    let tenCanXoa = prompt("Nhập tên sinh viên cần xóa:");
+                    let xoaXong = false;
+                    for (let i = 0; i < danhSachSV.length; i++) {
+                        if (danhSachSV[i] === tenCanXoa) {
+                            danhSachSV.splice(i, 1);
+                            alert("Đã xóa sinh viên: " + tenCanXoa);
+                            xoaXong = true;
+                            break;
+                        }
+                    }
+                    if (xoaXong === false) {
+                        alert("Không tìm thấy sinh viên này để xóa");
+                    }
+                }
+            }
+        }
+
+        quanLySinhVien(); 
+    </script>
+</body>
+
+</html>
