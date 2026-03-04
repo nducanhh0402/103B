@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let books = [
+    { id: 1, name: "Lão Hạc", price: 35000, quantity: 15, category: "Văn học" },
+    { id: 2, name: "Số Đỏ", price: 50000, quantity: 10, category: "Văn học" },
+    { id: 3, name: "Tư duy phản biện", price: 120000, quantity: 20, category: "Kỹ năng" }
+];
+
+let cart = [];
+
+function manageBooks() {
+    while (true) {
+        let menu = "--- QUẢN LÝ SÁCH ---\n" +
+            "1. Hiển thị sách theo thể loại\n" +
+            "2. Thêm sách mới\n" +
+            "3. Tìm kiếm sách\n" +
+            "4. Mua sách\n" +
+            "5. Sắp xếp theo giá\n" +
+            "6. Xem giỏ hàng (Số lượng & Tổng tiền)\n" +
+            "7. Tổng số lượng trong kho\n" +
+            "8. Thoát";
+        
+        let choice = parseInt(prompt(menu));
+
+        if (choice === 1) {
+            let cat = prompt("Nhập thể loại:");
+            console.table(books.filter(b => b.category.toLowerCase() === cat.toLowerCase()));
+        } 
+        else if (choice === 2) {
+            let id = Number(prompt("Nhập ID:"));
+            let name = prompt("Nhập tên sách:");
+            let price = Number(prompt("Nhập giá:"));
+            let quantity = Number(prompt("Nhập số lượng:"));
+            let category = prompt("Nhập thể loại:");
+            books.push({ id, name, price, quantity, category });
+        } 
+        else if (choice === 3) {
+            let key = prompt("Nhập tên hoặc ID:");
+            console.table(books.filter(b => b.id == key || b.name.includes(key)));
+        } 
+        else if (choice === 4) {
+            let id = Number(prompt("Nhập ID sách cần mua:"));
+            let book = books.find(b => b.id === id);
+            if (book) {
+                let qty = Number(prompt("Nhập số lượng mua:"));
+                if (qty <= book.quantity) {
+                    book.quantity -= qty;
+                    cart.push({ ...book, quantity: qty });
+                    alert("Đã thêm vào giỏ hàng");
+                } else {
+                    alert("Kho không đủ hàng");
+                }
+            }
+        } 
+        else if (choice === 5) {
+            let type = prompt("Chọn: 1 (Tăng), 2 (Giảm)");
+            let sorted = [...books].sort((a, b) => type === "1" ? a.price - b.price : b.price - a.price);
+            console.table(sorted);
+        } 
+        else if (choice === 6) {
+            let totalQty = cart.reduce((s, i) => s + i.quantity, 0);
+            let totalMoney = cart.reduce((s, i) => s + (i.price * i.quantity), 0);
+            console.log("Số lượng đã mua:", totalQty);
+            console.log("Tổng tiền:", totalMoney);
+            console.table(cart);
+        } 
+        else if (choice === 7) {
+            let stock = books.reduce((s, i) => s + i.quantity, 0);
+            alert("Tổng số lượng trong kho: " + stock);
+        } 
+        else if (choice === 8) {
+            break;
+        }
+    }
+}
+
+manageBooks();
+    </script>
+</body>
+</html>

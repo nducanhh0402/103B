@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>let books = [
+            { id: 1, name: "Đắc Nhân Tâm", price: 80000, quantity: 10, category: "Kỹ năng" },
+            { id: 2, name: "Dế Mèn Phiêu Lưu Ký", price: 50000, quantity: 15, category: "Văn học" },
+            { id: 3, name: "Nhà Giả Kim", price: 70000, quantity: 8, category: "Tiểu thuyết" }
+        ];
+
+        let cart = [];
+
+        function main() {
+            let loop = true;
+            while (loop) {
+                let menu = `--- QUẢN LÝ SÁCH ---
+1. Hiển thị sách theo thể loại
+2. Thêm sách mới vào kho
+3. Tìm kiếm sách theo tên hoặc ID
+4. Mua sách
+5. Sắp xếp sách theo giá
+6. Tổng đơn hàng trong giỏ
+7. Tổng số lượng sách trong kho
+8. Thoát
+Nhập lựa chọn của bạn:`;
+
+                let choice = parseInt(prompt(menu));
+
+                switch (choice) {
+                    case 1:
+                        displayByCategory();
+                        break;
+                    case 2:
+                        addBook();
+                        break;
+                    case 3:
+                        searchBook();
+                        break;
+                    case 4:
+                        buyBook();
+                        break;
+                    case 5:
+                        sortBooks();
+                        break;
+                    case 6:
+                        viewCart();
+                        break;
+                    case 7:
+                        totalStock();
+                        break;
+                    case 8:
+                        loop = false;
+                        console.log("Đã thoát chương trình.");
+                        break;
+                    default:
+                        alert("Lựa chọn không hợp lệ!");
+                }
+            }
+        }
+
+        function displayByCategory() {
+            let cat = prompt("Nhập thể loại muốn xem:");
+            let filtered = books.filter(b => b.category.toLowerCase() === cat.toLowerCase());
+            if (filtered.length > 0) {
+                console.table(filtered);
+            } else {
+                console.log("Không tìm thấy thể loại này.");
+            }
+        }
+
+        function addBook() {
+            let id = Date.now();
+            let name = prompt("Nhập tên sách:");
+            let price = Number(prompt("Nhập giá sách:"));
+            let quantity = Number(prompt("Nhập số lượng:"));
+            let category = prompt("Nhập thể loại:");
+            books.push({ id, name, price, quantity, category });
+            console.log("Đã thêm sách mới.");
+        }
+
+        function searchBook() {
+            let keyword = prompt("Nhập ID hoặc tên sách:");
+            let result = books.filter(b => b.id == keyword || b.name.toLowerCase().includes(keyword.toLowerCase()));
+            console.table(result);
+        }
+
+        function buyBook() {
+            let id = parseInt(prompt("Nhập ID sách cần mua:"));
+            let book = books.find(b => b.id === id);
+            if (book) {
+                let qty = parseInt(prompt(`Nhập số lượng (Kho còn: ${book.quantity}):`));
+                if (qty > 0 && qty <= book.quantity) {
+                    book.quantity -= qty;
+                    cart.push({ ...book, quantity: qty });
+                    console.log("Mua thành công!");
+                } else {
+                    console.log("Số lượng không hợp lệ hoặc không đủ hàng.");
+                }
+            } else {
+                console.log("Sách không tồn tại.");
+            }
+        }
+
+        function sortBooks() {
+            let type = prompt("Chọn: 1 - Tăng dần, 2 - Giảm dần");
+            let sorted = [...books];
+            if (type === "1") {
+                sorted.sort((a, b) => a.price - b.price);
+            } else {
+                sorted.sort((a, b) => b.price - a.price);
+            }
+            console.table(sorted);
+        }
+
+        function viewCart() {
+            let totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+            let totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            console.log(`Số lượng sách đã mua: ${totalQty}`);
+            console.log(`Tổng tiền trong giỏ hàng: ${totalPrice.toLocaleString()} VNĐ`);
+            console.table(cart);
+        }
+
+        function totalStock() {
+            let total = books.reduce((sum, item) => sum + item.quantity, 0);
+            console.log(`Tổng số lượng sách còn lại trong kho: ${total}`);
+        }
+
+        main();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let products = [
+            { id: 1, name: "mèn mén", price: 20000, quantity: 20, category: "món ăn dân tộc Mông" },
+            { id: 2, name: "mứt", price: 80000, quantity: 21, category: "món ăn dân tộc Kinh" },
+            { id: 3, name: "cơm lam", price: 40000, quantity: 15, category: "món ăn dân tộc Mông" },
+            { id: 4, name: "bánh đậu xanh", price: 60000, quantity: 30, category: "món ăn dân tộc Kinh" }
+        ];
+
+        let cart = [];
+
+        function mainMenu() {
+            let choice;
+            do {
+                console.log("\n--- QUẢN LÝ CỬA HÀNG ---");
+                console.log("1. Hiển thị sản phẩm theo danh mục");
+                console.log("2. Chọn sản phẩm để mua (nhập ID)");
+                console.log("3. Sắp xếp sản phẩm theo giá");
+                console.log("4. Tính tổng tiền trong giỏ hàng");
+                console.log("5. Thoát");
+
+                choice = parseInt(prompt("Nhập lựa chọn của bạn (1-5):"));
+
+                switch (choice) {
+                    case 1:
+                        displayByCategory();
+                        break;
+                    case 2:
+                        buyProduct();
+                        break;
+                    case 3:
+                        sortProducts();
+                        break;
+                    case 4:
+                        calculateTotal();
+                        break;
+                    case 5:
+                        console.log("Tạm biệt!");
+                        break;
+                    default:
+                        console.log("Lựa chọn không hợp lệ!");
+                }
+            } while (choice !== 5);
+        }
+
+        function displayByCategory() {
+            let categories = [...new Set(products.map(p => p.category))];
+            categories.forEach(cat => {
+                console.log(`\nDanh mục: ${cat}`);
+                products.filter(p => p.category === cat).forEach(p => {
+                    console.log(` - ID: ${p.id} | ${p.name} | Giá: ${p.price} | Kho: ${p.quantity}`);
+                });
+            });
+        }
+
+        function buyProduct() {
+            let idInput = parseInt(prompt("Nhập ID sản phẩm muốn mua:"));
+            let product = products.find(p => p.id === idInput);
+
+            if (!product) {
+                console.log("Thông báo: Sản phẩm không có trong cửa hàng.");
+                return;
+            }
+
+            let buyQty = parseInt(prompt(`Nhập số lượng muốn mua cho ${product.name}:`));
+
+            if (product.quantity === 0 || buyQty > product.quantity) {
+                console.log("Thông báo: Số lượng trong cửa hàng không đủ hoặc đã hết.");
+            } else {
+                product.quantity -= buyQty;
+
+                let itemInCart = cart.find(item => item.id === product.id);
+                if (itemInCart) {
+                    itemInCart.buyQty += buyQty;
+                } else {
+                    cart.push({ ...product, buyQty: buyQty });
+                }
+                console.log(`Đã thêm ${buyQty} ${product.name} vào giỏ hàng thành công!`);
+            }
+        }
+
+        function sortProducts() {
+            let type = prompt("Chọn kiểu sắp xếp (a: Tăng dần, b: Giảm dần):");
+            let sortedList = [...products];
+
+            if (type === 'a') {
+                sortedList.sort((a, b) => a.price - b.price);
+            } else if (type === 'b') {
+                sortedList.sort((a, b) => b.price - a.price);
+            }
+
+            console.log("--- Kết quả sắp xếp ---");
+            sortedList.forEach(p => console.log(`${p.name}: ${p.price} VND`));
+        }
+
+        function calculateTotal() {
+            let total = cart.reduce((sum, item) => sum + (item.price * item.buyQty), 0);
+            console.log("\n--- CHI TIẾT GIỎ HÀNG ---");
+            cart.forEach(item => {
+                console.log(`${item.name} x ${item.buyQty} = ${item.price * item.buyQty} VND`);
+            });
+            console.log(`=> TỔNG CỘNG: ${total} VND`);
+        }
+
+        mainMenu();
+    </script>
+</body>
+
+</html>
