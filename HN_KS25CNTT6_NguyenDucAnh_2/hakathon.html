@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let films = [
+            { id: 1, name: 'kuma', time: 23.00, tien: 150.000 },
+            { id: 2, name: 'Kaka', time: 21.00, tien: 200.000 },
+            { id: 3, name: 'huhu', time: 12.00, tien: 115.000 },
+        ];
+     let newFilms = (films) => {
+            let id = +prompt('Nhập vào id của phim')
+            let name = prompt(' Nhập vào tên của phim')
+            let time = +prompt(' Nhập thời gian chiếu của phim')
+            let tien = +prompt(' Nhập tien của phim')
+
+        let newFilms = {
+            id: id,
+            name: name,
+            time: time,
+            tien: tien,
+        };
+        films.push(newFilms);
+        console.table(films)
+        alert(
+            ` Thêm phim thành công`
+        )
+}
+function danhsachFilms(films) {
+    console.table(films);
+    let result = "Danh sách films là: \n";
+    films.forEach((film) => {
+        result += `id: ${film.id} | name: ${film.name} | time: ${film.time} | tien: ${film.tien}\n`;
+    });
+    alert(result);
+}
+        let choice;
+        do {
+            choice = +prompt(`Nhập lựa chọn của bạn 
+            1. Thêm phim
+            2. Xóa phim
+            3. Hiển thị danh sách phim
+            4. Cập nhật thông tin phim
+            5. Tìm phim
+            6. Lọc phim theo thời gian chiếu
+            7. Tính tổng số tiền cho toàn bộ vé
+            8. Sắp xếp phim theo giá vé
+            9. Tìm kiếm phim theo khoảng giá
+            0. Thoát
+            `);
+
+            switch (choice) {
+                case 1:
+                    console.log('Chức năng 1');
+                    newFilms(films);
+                    console.log(newFilms(films));
+                    break;
+                case 3: 
+                    console.log('Chức năng 3');
+                    danhsachFilms(films);
+                    break;
+                default:
+                    break;
+            }
+        } while (choice !== 0);
+    </script>
+</body>
+</html>
