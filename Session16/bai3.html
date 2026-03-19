@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lọc sản phẩm theo danh mục</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        .filter-group {
+            margin-bottom: 20px;
+        }
+
+        select,
+        button {
+            padding: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .product-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Lọc sản phẩm</h2>
+
+    <div class="filter-group">
+        <select id="categorySelect">
+            <option value="all">Tất cả sản phẩm</option>
+            <option value="phone">Điện thoại</option>
+            <option value="laptop">Laptop</option>
+        </select>
+        <button id="filterBtn">Lọc</button>
+    </div>
+
+    <div class="product-list" id="productList">
+        <div class="product-item" data-category="phone">iPhone 15</div>
+        <div class="product-item" data-category="laptop">MacBook Pro</div>
+        <div class="product-item" data-category="phone">Samsung S24</div>
+        <div class="product-item" data-category="laptop">Dell XPS</div>
+        <div class="product-item" data-category="phone">Xiaomi 14</div>
+    </div>
+
+    <script>
+        const categorySelect = document.getElementById('categorySelect');
+        const filterBtn = document.getElementById('filterBtn');
+        const products = document.querySelectorAll('.product-item');
+
+        filterBtn.onclick = function () {
+            const selectedValue = categorySelect.value;
+
+            products.forEach(product => {
+                const productCategory = product.getAttribute('data-category');
+
+                if (selectedValue === 'all' || productCategory === selectedValue) {
+                    product.classList.remove('hidden');
+                } else {
+                    product.classList.add('hidden');
+                }
+            });
+        };
+    </script>
+
+</body>
+
+</html>

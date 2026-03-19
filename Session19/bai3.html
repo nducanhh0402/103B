@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rikkei Academy - Full Practice</title>
+    <style>
+        /* CSS Giao diện & Đổi màu nền */
+        body {
+            font-family: Arial, sans-serif;
+            transition: background 0.3s;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .color-picker {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .color-picker button {
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .form-group {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+            display: none;
+            margin-top: -5px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        .pagination {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .pagination button {
+            padding: 5px 10px;
+            cursor: pointer;
+            border: 1px solid #007bff;
+            background: white;
+            color: #007bff;
+        }
+
+        .pagination button.active {
+            background: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="color-picker">
+            <p>Chọn màu nền yêu thích:</p>
+            <button style="background: red;" onclick="changeBg('red')">Đỏ</button>
+            <button style="background: green;" onclick="changeBg('green')">Xanh</button>
+            <button style="background: orange;" onclick="changeBg('orange')">Vàng</button>
+            <button style="background: purple;" onclick="changeBg('purple')">Tím</button>
+            <button style="background: white; color: black; border: 1px solid #ccc;" onclick="changeBg('white')">Mặc
+                định</button>
+        </div>
+
+        <hr>
+
+        <h2 style="text-align: center;">Danh sách nhân viên Rikkei</h2>
+        <div class="form-group">
+            <label>tên nhân viên</label>
+            <input type="text" id="empName">
+            <label>chức vụ</label>
+            <input type="text" id="empRole">
+        </div>
+        <div id="validateMsg" class="error">Vui lòng nhập đầy đủ thông tin nhân viên!</div>
+        <div style="text-align: center;">
+            <button id="addBtn" onclick="addEmployee()" style="padding: 8px 15px; cursor: pointer;">thêm nhân
+                viên</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên</th>
+                    <th>Chức vụ</th>
+                </tr>
+            </thead>
+            <tbody id="employeeTable"></tbody>
+        </table>
+
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+    <script>
+        function changeBg(color) {
+            document.body.style.backgroundColor = color;
+            localStorage.setItem('themeColor', color);
+        }
+
+        let employees = JSON.parse(localStorage.getItem('employees')) || [];
+        let currentPage = 1;
+        const rowsPerPage = 3;
+
+        function addEmployee() {
+            const nameInput = document.getElementById('empName');
+            const roleInput = document.getElementById('empRole');
+            const error = document.getElementById('validateMsg');
+
+            if (nameInput.value.trim() === "" || roleInput.value.trim() === "") {
+                error.style.display = 'block';
+                return;
+            }
+
+            error.style.display = 'none';
+            employees.push({ name: nameInput.value, role: roleInput.value });
+            localStorage.setItem('employees', JSON.stringify(employees));
+
+            nameInput.value = "";
+            roleInput.value = "";
+            currentPage = Math.ceil(employees.length / rowsPerPage);
+            render();
+        }
+
+        function render() {
+            const tableBody = document.getElementById('employeeTable');
+            const pagination = document.getElementById('pagination');
+            tableBody.innerHTML = "";
+
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const pageData = employees.slice(start, end);
+
+            pageData.forEach((emp, index) => {
+                tableBody.innerHTML += `
+                <tr>
+                    <td>${start + index + 1}</td>
+                    <td>${emp.name}</td>
+                    <td>${emp.role}</td>
+                </tr>`;
+            });
+
+            pagination.innerHTML = "";
+            const totalPages = Math.ceil(employees.length / rowsPerPage);
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.innerText = i;
+                if (i === currentPage) btn.className = 'active';
+                btn.onclick = () => { currentPage = i; render(); };
+                pagination.appendChild(btn);
+            }
+        }
+
+        window.onload = () => {
+            const savedColor = localStorage.getItem('themeColor');
+            if (savedColor) document.body.style.backgroundColor = savedColor;
+
+            render();
+        };
+    </script>
+</body>
+
+</html>

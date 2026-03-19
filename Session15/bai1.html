@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đổi màu nền ngẫu nhiên</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            transition: background-color 0.3s ease; 
+            font-family: Arial, sans-serif;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: 1px solid #333;
+            background-color: #f0f0f0;
+        }
+
+        button:active {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <button id="btn-change">Đổi màu nền</button>
+
+    <script>
+        const btn = document.getElementById('btn-change');
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        btn.addEventListener('click', function() {
+            const newColor = getRandomColor();
+            
+            document.body.style.backgroundColor = newColor;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Giỏ Hàng Tết 2026</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            padding: 20px;
+            gap: 30px;
+            background-color: #f4f4f4;
+        }
+
+        .product-list,
+        .cart-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-list {
+            flex: 2;
+        }
+
+        .cart-section {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .item {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+
+        button {
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: none;
+        }
+
+        .btn-buy {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-del {
+            background-color: #dc3545;
+            color: white;
+            margin-left: 10px;
+        }
+
+        .btn-pay {
+            background-color: #007bff;
+            color: white;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .total {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 15px;
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="product-list">
+        <h2>Sản phẩm Tết</h2>
+        <div id="products-ui"></div>
+    </div>
+
+    <div class="cart-section">
+        <h2>Giỏ hàng</h2>
+        <ul id="cart-ui" style="list-style: none; padding: 0;"></ul>
+        <div class="total">Tổng tiền: <span id="total-price">0</span> VNĐ</div>
+        <button class="btn-pay" onclick="checkout()">Thanh toán</button>
+    </div>
+
+    <script>
+        const products = [
+            { id: 1, name: "Bánh Chưng", price: 150000 },
+            { id: 2, name: "Giò Lụa", price: 180000 },
+            { id: 3, name: "Cành Đào", price: 500000 },
+            { id: 4, name: "Mứt Tết", price: 120000 },
+            { id: 5, name: "Lì Xì (Tệp)", price: 20000 },
+            { id: 6, name: "Dưa Hấu", price: 60000 }
+        ];
+
+        let cart = [];
+
+        function init() {
+            const storedCart = localStorage.getItem('cart');
+            if (storedCart) {
+                cart = JSON.parse(storedCart); 
+            }
+            renderProducts();
+            renderCart();
+        }
+
+        function renderProducts() {
+            const ui = document.getElementById('products-ui');
+            ui.innerHTML = products.map(p => `
+            <div class="item">
+                <span>${p.name} - <span class="price">${p.price.toLocaleString()} VNĐ</span></span>
+                <button class="btn-buy" onclick="addToCart(${p.id})">Mua ngay</button>
+            </div>
+        `).join('');
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            cart.push({ ...product, cartId: Date.now() });
+            saveAndRender();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1); 
+            saveAndRender();
+        }
+
+        function checkout() {
+            if (cart.length > 0) {
+                alert("Đã thanh toán thành công!");
+                localStorage.removeItem('cart'); 
+                cart = []; 
+                renderCart();
+            } else {
+                alert("Giỏ hàng đang trống!");
+            }
+        }
+
+        function saveAndRender() {
+            localStorage.setItem('cart', JSON.stringify(cart)); 
+            renderCart();
+        }
+
+        function renderCart() {
+            const ui = document.getElementById('cart-ui');
+            const totalUi = document.getElementById('total-price');
+            let total = 0;
+
+            ui.innerHTML = cart.map((item, index) => {
+                total += item.price;
+                return `
+                <li class="item">
+                    ${item.name} (${item.price.toLocaleString()} VNĐ)
+                    <button class="btn-del" onclick="removeFromCart(${index})">X</button>
+                </li>
+            `;
+            }).join('');
+
+            totalUi.innerText = total.toLocaleString();
+        }
+
+        // Khởi chạy khi tải trang
+        init();
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./bai5.css" />
+  </head>
+  <body>
+    <h2>🗂️ Quản lý công việc (Task Board)</h2>
+
+    <div class="task-input">
+      <input type="text" id="taskName" placeholder="Nhập tên công việc..." />
+      <button>Thêm</button>
+    </div>
+
+    <div class="board">
+      <div class="column" id="pendingCol">
+        <h3>🕐 Chờ xử lý</h3>
+        <div id="pendingTasks">
+          <!-- <div class="task">
+            <p>Nội dung</p>
+            <button>Chuyển tiếp</button>
+          </div> -->
+        </div>
+      </div>
+      <div class="column" id="inProgressCol">
+        <h3>🔨 Đang làm</h3>
+        <div id="inProgressTasks"></div>
+      </div>
+      <div class="column" id="doneCol">
+        <h3>✅ Hoàn thành</h3>
+        <div id="doneTasks">
+          <!-- <div class="task">
+            <p>Nội dung</p>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

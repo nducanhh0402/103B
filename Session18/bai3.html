@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Giỏ Hàng Tết 2026 - LocalStorage</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            padding: 40px;
+            gap: 30px;
+            background-color: #fdfcfb;
+        }
+
+        .products-grid {
+            flex: 2;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .product-card {
+            background: #fff;
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .price {
+            color: #d32f2f;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .cart-sidebar {
+            flex: 1;
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            transition: 0.2s;
+        }
+
+        .btn-add {
+            background: #28a745;
+            color: #fff;
+            padding: 8px 12px;
+        }
+
+        .btn-del {
+            background: #ff4d4f;
+            color: #fff;
+            padding: 2px 8px;
+            font-size: 12px;
+        }
+
+        .btn-checkout {
+            background: #d32f2f;
+            color: #fff;
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .total {
+            font-size: 20px;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 15px;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="products-grid" id="productUI"></div>
+
+    <div class="cart-sidebar">
+        <h3 style="color: #d32f2f; border-bottom: 2px solid #d32f2f; padding-bottom: 10px;">Giỏ hàng Tết 🌸</h3>
+        <div id="cartUI"></div>
+        <div class="total">Tổng: <span id="totalPrice">0</span> VNĐ</div>
+        <button class="btn-checkout" onclick="checkout()">Thanh toán</button>
+    </div>
+
+    <script>
+        const products = [
+            { id: 1, name: "Bánh Chưng", price: 150000 },
+            { id: 2, name: "Giò Lụa", price: 180000 },
+            { id: 3, name: "Cành Đào", price: 500000 },
+            { id: 4, name: "Mứt Tết", price: 120000 },
+            { id: 5, name: "Lì Xì (Tệp)", price: 20000 },
+            { id: 6, name: "Dưa Hấu", price: 60000 }
+        ];
+
+        let cart = [];
+
+        function init() {
+            const savedData = localStorage.getItem('cart');
+            if (savedData) {
+                cart = JSON.parse(savedData); 
+            }
+            renderProducts();
+            renderCart();
+        }
+
+        function renderProducts() {
+            const ui = document.getElementById('productUI');
+            ui.innerHTML = products.map(p => `
+                <div class="product-card">
+                    <h4>${p.name}</h4>
+                    <p class="price">${p.price.toLocaleString()} VNĐ</p>
+                    <button class="btn-add" onclick="addToCart(${p.id})">Mua ngay</button>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+
+            cart.push({ ...product, cartId: Date.now() });
+
+            saveData();
+            renderCart();
+        }
+
+        function saveData() {
+            localStorage.setItem('cart', JSON.stringify(cart)); 
+        }
+
+        function renderCart() {
+            const ui = document.getElementById('cartUI');
+            const totalUI = document.getElementById('totalPrice');
+            let total = 0;
+
+            ui.innerHTML = cart.map((item, index) => {
+                total += item.price;
+                return `
+                    <div class="cart-item">
+                        <span>${item.name}</span>
+                        <div>
+                            <span style="font-weight:bold">${item.price.toLocaleString()}</span>
+                            <button class="btn-del" onclick="removeFromCart(${index})">X</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            if (cart.length === 0) ui.innerHTML = "<p style='color:#999'>Giỏ hàng trống...</p>";
+            totalUI.innerText = total.toLocaleString();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            saveData();
+            renderCart();
+        }
+
+        function checkout() {
+            if (cart.length > 0) {
+                alert("🧧 Đã thanh toán thành công! Chúc bạn ăn Tết vui vẻ!");
+                localStorage.removeItem('cart');
+                cart = []; 
+                renderCart(); 
+            } else {
+                alert("Giỏ hàng đang trống, hãy chọn sản phẩm trước nhé!");
+            }
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

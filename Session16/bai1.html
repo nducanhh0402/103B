@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ẩn/Hiện Mật Khẩu - DOM JS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-top: 100px;
+            background-color: #f4f4f4;
+        }
+
+        .password-wrapper {
+            position: relative;
+            width: 300px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            padding-right: 40px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            user-select: none;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="password-wrapper">
+        <input type="password" id="passwordInput" placeholder="Nhập mật khẩu...">
+
+        <span id="toggleIcon" class="toggle-password">👁️</span>
+    </div>
+
+    <script>
+        const passwordInput = document.getElementById('passwordInput');
+        const toggleIcon = document.getElementById('toggleIcon');
+
+        toggleIcon.onclick = function () {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.textContent = '👁️';
+            }
+        };
+    </script>
+
+</body>
+
+</html>

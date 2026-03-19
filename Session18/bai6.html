@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý danh mục - Lọc trạng thái</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 30px;
+            background-color: #f0f2f5;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #1a73e8;
+        }
+
+        .form-section {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        input,
+        select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .error {
+            color: #d93025;
+            font-size: 13px;
+            display: none;
+            margin-top: -5px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .btn-add {
+            background-color: #1a73e8;
+            color: white;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        .filter-section {
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th,
+        td {
+            border: 1px solid #e0e0e0;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            color: #5f6368;
+        }
+
+        .status-active {
+            color: #188038;
+            font-weight: bold;
+        }
+
+        .status-inactive {
+            color: #d93025;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>DANH MỤC SẢN PHẨM</h2>
+
+        <div class="form-section">
+            <div class="input-group">
+                <label>Tên danh mục:</label>
+                <input type="text" id="catName" placeholder="Ví dụ: Điện thoại, Laptop...">
+                <span id="errorName" class="error">Tên không được để trống!</span>
+            </div>
+            <div class="input-group">
+                <label>Trạng thái:</label>
+                <select id="catStatus">
+                    <option value="true">Hoạt động</option>
+                    <option value="false">Ngừng kinh doanh</option>
+                </select>
+            </div>
+            <button class="btn-add" onclick="handleAdd()">Thêm mới danh mục</button>
+        </div>
+
+        <hr>
+
+        <div class="filter-section">
+            <label><b>Lọc trạng thái:</b></label>
+            <select id="filterStatus" onchange="renderData()">
+                <option value="all">Tất cả</option>
+                <option value="true">Hoạt động</option>
+                <option value="false">Ngừng kinh doanh</option>
+            </select>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 10%;">STT</th>
+                    <th style="width: 50%;">Tên danh mục</th>
+                    <th style="width: 40%;">Trạng thái</th>
+                </tr>
+            </thead>
+            <tbody id="tableContent"></tbody>
+        </table>
+    </div>
+
+    <script>
+        let categories = JSON.parse(localStorage.getItem("categories_v2")) || [];
+
+        function renderData() {
+            const tableContent = document.getElementById("tableContent");
+            const filterValue = document.getElementById("filterStatus").value;
+
+            tableContent.innerHTML = "";
+
+            let filteredList = categories;
+            if (filterValue !== "all") {
+                const isStatus = (filterValue === "true");
+                filteredList = categories.filter(item => item.status === isStatus);
+            }
+
+            if (filteredList.length === 0) {
+                tableContent.innerHTML = `<tr><td colspan="3" style="text-align:center">Không tìm thấy danh mục nào</td></tr>`;
+                return;
+            }
+
+            filteredList.forEach((item, index) => {
+                const statusText = item.status ? "Hoạt động" : "Ngừng kinh doanh";
+                const statusClass = item.status ? "status-active" : "status-inactive";
+
+                tableContent.innerHTML += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${item.name}</td>
+                    <td class="${statusClass}">${statusText}</td>
+                </tr>
+            `;
+            });
+        }
+
+        function handleAdd() {
+            const nameInput = document.getElementById("catName");
+            const statusSelect = document.getElementById("catStatus");
+            const errorMsg = document.getElementById("errorName");
+
+            if (nameInput.value.trim() === "") {
+                errorMsg.style.display = "block";
+                nameInput.style.borderColor = "red";
+                return;
+            }
+
+            const newCategory = {
+                name: nameInput.value.trim(),
+                status: statusSelect.value === "true"
+            };
+
+            categories.push(newCategory);
+            localStorage.setItem("categories_v2", JSON.stringify(categories));
+
+            nameInput.value = "";
+            errorMsg.style.display = "none";
+            nameInput.style.borderColor = "#ccc";
+
+            renderData();
+            alert("Thêm danh mục thành công!");
+        }
+
+        renderData();
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const products = [
+            { id: 1, name: "Bánh Chưng", price: 150000, img: "https://via.placeholder.com/150" },
+            { id: 2, name: "Giò Lụa", price: 180000, img: "https://via.placeholder.com/150" },
+            { id: 3, name: "Cành Đào", price: 500000, img: "https://via.placeholder.com/150" },
+            { id: 4, name: "Mứt Tết", price: 120000, img: "https://via.placeholder.com/150" },
+            { id: 5, name: "Lì Xì (Tệp)", price: 20000, img: "https://via.placeholder.com/150" },
+            { id: 6, name: "Dưa Hấu", price: 60000, img: "https://via.placeholder.com/150" }
+        ];
+
+        const productContainer = document.getElementById('product-container');
+        const cartList = document.getElementById('cart-list');
+        const totalPriceElement = document.getElementById('total-price');
+        let totalAmount = 0;
+
+        function renderProducts() {
+            products.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'product-item';
+                productDiv.innerHTML = `
+            <img src="${product.img}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <p>Giá: ${product.price.toLocaleString()} VND</p>
+            <button class="buy-btn" data-id="${product.id}">Mua ngay</button>
+        `;
+                productContainer.appendChild(productDiv);
+            });
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const emptyMsg = cartList.querySelector('.empty-cart-msg');
+            if (emptyMsg) emptyMsg.remove();
+
+            const li = document.createElement('li');
+            li.innerText = `${product.name} - ${product.price.toLocaleString()} VND`;
+            cartList.appendChild(li);
+
+            totalAmount += product.price;
+            totalPriceElement.innerText = totalAmount.toLocaleString();
+        }
+
+        productContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('buy-btn')) {
+                const id = parseInt(e.target.getAttribute('data-id'));
+                addToCart(id);
+            }
+        });
+
+        renderProducts();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const products = [
+            { id: 1, name: "Bánh Chưng", price: 150000 },
+            { id: 2, name: "Giò Lụa", price: 180000 },
+            { id: 3, name: "Cành Đào", price: 500000 },
+            { id: 4, name: "Mứt Tết", price: 120000 },
+            { id: 5, name: "Bao Lì Xì", price: 25000 },
+            { id: 6, name: "Dưa Hấu Tết", price: 80000 },
+        ];
+
+        const productList = document.getElementById('product-list');
+        const productForm = document.getElementById('product-form');
+        const productNameInput = document.getElementById('product-name');
+        const productPriceInput = document.getElementById('product-price');
+        const searchInput = document.getElementById('search-input');
+
+        function renderProduct(product) {
+            const li = document.createElement('li');
+            li.className = 'product-item';
+            li.innerHTML = `
+    <div class="product">
+      <strong class="product-name-text">${product.name}</strong> - 
+      <span class="price-display">${product.price.toLocaleString()} VND</span>
+      <button class="edit-price-btn">Sửa giá</button>
+      <button class="delete-btn">Xóa</button>
+    </div>
+  `;
+
+            li.querySelector('.delete-btn').addEventListener('click', function () {
+                if (confirm("Bạn có chắc muốn xóa sản phẩm này?")) {
+                    li.remove();
+                }
+            });
+
+            li.querySelector('.edit-price-btn').addEventListener('click', function () {
+                const newPrice = prompt("Nhập giá mới (VND):");
+                if (newPrice !== null && newPrice.trim() !== "") {
+                    const priceNum = Number(newPrice);
+                    li.querySelector('.price-display').innerText = `${priceNum.toLocaleString()} VND`;
+                }
+            });
+
+            productList.appendChild(li);
+        }
+
+        products.forEach(product => renderProduct(product));
+
+        productForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const newProduct = {
+                id: Date.now(),
+                name: productNameInput.value,
+                price: Number(productPriceInput.value)
+            };
+
+            renderProduct(newProduct);
+
+            productNameInput.value = '';
+            productPriceInput.value = '';
+        });
+
+        searchInput.addEventListener('input', function () {
+            const searchTerm = searchInput.value.toLowerCase();
+            const allItems = document.querySelectorAll('.product-item');
+
+            allItems.forEach(item => {
+                const productName = item.querySelector('.product-name-text').innerText.toLowerCase();
+                if (productName.includes(searchTerm)) {
+                    item.style.display = "";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

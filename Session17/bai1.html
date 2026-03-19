@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chuẩn bị Tết Nguyên Đán</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            padding-top: 50px;
+        }
+
+        .card {
+            width: 400px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background-color: #d32f2f;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .header p {
+            margin: 5px 0 0;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .todo-list {
+            padding: 20px;
+        }
+
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            border: 1px solid #ffebee;
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+        }
+
+        .todo-item .task-name {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .todo-item .task-name::before {
+            content: '🌸';
+        }
+
+        .status {
+            font-size: 11px;
+            color: #999;
+            font-style: italic;
+        }
+
+        .footer {
+            padding: 10px;
+            text-align: center;
+            font-size: 11px;
+            color: #888;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <div class="header">
+            <h2>Chuẩn bị Tết Nguyên Đán</h2>
+            <p>Danh sách việc cần làm</p>
+        </div>
+
+        <div class="todo-list" id="todoContainer">
+        </div>
+
+        <div class="footer">
+            Đã lưu vào localStorage lần đầu tiên + Refresh trang để kiểm tra
+        </div>
+    </div>
+
+    <script>
+        const initialTodos = [
+            { id: 1, task: "Mua bánh chưng", done: false },
+            { id: 2, task: "Dọn nhà đón Tết", done: false },
+            { id: 3, task: "Gói bánh chưng", done: false },
+            { id: 4, task: "Trang trí nhà cửa", done: false }
+        ];
+
+        const container = document.getElementById('todoContainer');
+
+        function displayTodos(data) {
+            container.innerHTML = "";
+            data.forEach(item => {
+                const html = `
+                <div class="todo-item">
+                    <div class="task-name">${item.task}</div>
+                    <div class="status">${item.done ? 'Hoàn thành' : 'Chưa làm'}</div>
+                </div>
+            `;
+                container.insertAdjacentHTML('beforeend', html);
+            });
+        }
+
+        function initApp() {
+            let storedData = localStorage.getItem('myTodos');
+
+            if (!storedData) {
+                console.log("Lần đầu: Lưu dữ liệu vào localStorage...");
+                localStorage.setItem('myTodos', JSON.stringify(initialTodos));
+                displayTodos(initialTodos);
+            } else {
+                console.log("F5: Lấy dữ liệu từ localStorage...");
+                const dataFromStorage = JSON.parse(storedData);
+                displayTodos(dataFromStorage);
+            }
+        }
+        initApp();
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý công việc Tết - Phiên bản Toàn diện</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .card {
+            width: 550px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background-color: #c62828;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stats-section {
+            background-color: #fffde7;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: #555;
+            border-bottom: 1px solid #eee;
+        }
+
+        .input-group {
+            display: flex;
+            padding: 20px;
+            gap: 8px;
+            background-color: #fff9f9;
+            align-items: center;
+        }
+
+        input#newTask {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+        }
+
+        .btn-add {
+            background-color: #ff9800;
+        }
+
+        .btn-delete-all {
+            background-color: #d32f2f;
+        }
+
+        .todo-list {
+            padding: 0 20px 20px;
+            min-height: 100px;
+        }
+
+        .empty-msg {
+            text-align: center;
+            color: #999;
+            margin-top: 30px;
+            font-style: italic;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            border: 1px solid #eee;
+            background-color: #fff;
+        }
+
+        .content-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .circle {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ff8a80;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .todo-item.completed {
+            background-color: #e8f5e9;
+            border-color: #c8e6c9;
+        }
+
+        .todo-item.completed .task-text {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        .todo-item.completed .circle {
+            background-color: #4caf50;
+            border-color: #4caf50;
+        }
+
+        .todo-item.completed .circle::after {
+            content: '✓';
+            color: white;
+            font-size: 12px;
+        }
+
+        .edit-input {
+            flex: 1;
+            padding: 5px;
+            border: 1px solid #2196F3;
+            border-radius: 4px;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 12px;
+            margin-left: 10px;
+        }
+
+        .icon {
+            cursor: pointer;
+            font-size: 18px;
+            opacity: 0.6;
+        }
+
+        .icon:hover {
+            opacity: 1;
+        }
+
+        .footer {
+            padding: 15px;
+            text-align: center;
+            font-size: 11px;
+            color: #999;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <div class="header">
+            <h2>Công việc chuẩn bị Tết</h2>
+            <p>Quản lý toàn diện danh sách</p>
+        </div>
+
+        <div id="stats" class="stats-section"></div>
+
+        <div class="input-group">
+            <input type="text" id="newTask" placeholder="Nhập công việc mới...">
+            <button class="btn btn-add" id="addBtn">Thêm</button>
+            <button class="btn btn-delete-all" id="deleteAllBtn">Xóa toàn bộ</button>
+        </div>
+
+        <div id="todoContainer" class="todo-list"></div>
+        <div class="footer">Mọi thay đổi được lưu tự động vào localStorage</div>
+    </div>
+
+    <script>
+        let myTodos = JSON.parse(localStorage.getItem("myTodos")) || [];
+        let editingId = null;
+
+        const container = document.getElementById('todoContainer');
+        const inputMain = document.getElementById('newTask');
+        const statsDiv = document.getElementById('stats');
+
+        function updateStats() {
+            const total = myTodos.length;
+            const completed = myTodos.filter(t => t.done).length;
+            const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+            statsDiv.innerText = `Tổng công việc: ${total} | Đã hoàn thành: ${completed} (${percent}%)`;
+        }
+
+        function saveAndRender() {
+            localStorage.setItem("myTodos", JSON.stringify(myTodos));
+            render();
+            updateStats();
+        }
+
+        function render() {
+            container.innerHTML = "";
+
+            if (myTodos.length === 0) {
+                container.innerHTML = '<p class="empty-msg">Chưa có công việc nào. Hãy thêm mới nhé!</p>';
+                return;
+            }
+
+            myTodos.forEach(item => {
+                const isEditing = editingId === item.id;
+                const div = document.createElement('div');
+                div.className = `todo-item ${item.done ? 'completed' : ''}`;
+                div.innerHTML = `
+                <div class="content-group">
+                    <div class="circle" onclick="toggleTask(${item.id})"></div>
+                    ${isEditing
+                        ? `<input type="text" class="edit-input" id="input-${item.id}" value="${item.task}">`
+                        : `<span class="task-text">${item.task}</span>`
+                    }
+                </div>
+                <div class="action-btns">
+                    <span class="icon" onclick="startEdit(${item.id})">✏️</span>
+                    <span class="icon" onclick="deleteTask(${item.id})">🗑️</span>
+                </div>
+            `;
+                container.appendChild(div);
+
+                if (isEditing) {
+                    const editInp = document.getElementById(`input-${item.id}`);
+                    editInp.focus();
+                    editInp.onkeydown = (e) => {
+                        if (e.key === 'Enter') finishEdit(item.id, editInp.value);
+                        if (e.key === 'Escape') { editingId = null; render(); }
+                    };
+                }
+            });
+        }
+
+        function addTask() {
+            const val = inputMain.value.trim();
+            if (!val) return;
+            myTodos.unshift({ id: Date.now(), task: val, done: false });
+            inputMain.value = "";
+            saveAndRender();
+        }
+
+        document.getElementById('deleteAllBtn').onclick = () => {
+            if (myTodos.length === 0) return;
+            const isConfirm = confirm("Bạn có chắc chắn muốn xóa TOÀN BỘ công việc chuẩn bị Tết không? Hành động này không thể hoàn tác.");
+            if (isConfirm) {
+                myTodos = [];
+                saveAndRender();
+            }
+        };
+
+        function toggleTask(id) {
+            myTodos = myTodos.map(t => t.id === id ? { ...t, done: !t.done } : t);
+            saveAndRender();
+        }
+
+        function deleteTask(id) {
+            myTodos = myTodos.filter(t => t.id !== id);
+            saveAndRender();
+        }
+
+        function startEdit(id) { editingId = id; render(); }
+
+        function finishEdit(id, newTitle) {
+            if (!newTitle.trim()) return;
+            myTodos = myTodos.map(t => t.id === id ? { ...t, task: newTitle.trim() } : t);
+            editingId = null;
+            saveAndRender();
+        }
+
+        document.getElementById('addBtn').onclick = addTask;
+        inputMain.onkeypress = (e) => { if (e.key === 'Enter') addTask(); };
+
+        saveAndRender();
+    </script>
+
+</body>
+
+</html>

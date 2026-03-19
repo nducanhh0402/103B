@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tìm kiếm sản phẩm - DOM JS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f9f9f9;
+        }
+
+        .search-container {
+            margin-bottom: 25px;
+        }
+
+        #searchInput {
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: white;
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .product-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            color: #e44d26;
+            font-size: 14px;
+        }
+
+        .hide {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Danh sách sản phẩm</h2>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Tìm kiếm theo tên sản phẩm...">
+    </div>
+
+    <div class="product-grid" id="productGrid">
+        <div class="product-card">
+            <div class="product-name">iPhone 15 Pro</div>
+            <div class="product-price">28.000.000đ</div>
+        </div>
+        <div class="product-card">
+            <div class="product-name">Samsung Galaxy S24</div>
+            <div class="product-price">22.000.000đ</div>
+        </div>
+        <div class="product-card">
+            <div class="product-name">MacBook Air M3</div>
+            <div class="product-price">32.000.000đ</div>
+        </div>
+        <div class="product-card">
+            <div class="product-name">iPad Pro M2</div>
+            <div class="product-price">25.000.000đ</div>
+        </div>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const productCards = document.querySelectorAll('.product-card');
+
+        searchInput.addEventListener('input', function () {
+            const filterValue = searchInput.value.toLowerCase().trim();
+
+            productCards.forEach(card => {
+                const productName = card.querySelector('.product-name').textContent.toLowerCase();
+
+                if (productName.includes(filterValue)) {
+                    card.classList.remove('hide');
+                } else {
+                    card.classList.add('hide');
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

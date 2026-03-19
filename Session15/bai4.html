@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Kiểm tra Email - DOM Practice</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 40px; }
+        
+        .container { display: flex; flex-direction: column; gap: 10px; width: 300px; }
+        
+        input { 
+            padding: 10px; 
+            font-size: 18px; 
+            border: 1px solid #555; 
+            border-radius: 4px;
+        }
+
+        #result { 
+            font-size: 22px; 
+            font-weight: 500; 
+            margin: 5px 0;
+            min-height: 30px;
+        }
+
+        button { 
+            padding: 5px 15px; 
+            font-size: 18px; 
+            cursor: pointer; 
+            width: fit-content;
+            border: 1px solid #767676;
+            background-color: #efefef;
+        }
+
+        .valid { color: green; }
+        .invalid { color: red; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <input type="text" id="emailInput" placeholder="Nhập email...">
+        
+        <div id="result"></div>
+        
+        <button id="checkBtn">check</button>
+    </div>
+
+    <script>
+        const emailInput = document.getElementById('emailInput');
+        const checkBtn = document.getElementById('checkBtn');
+        const result = document.getElementById('result');
+
+        checkBtn.addEventListener('click', function() {
+            const email = emailInput.value.trim();
+ 
+            const hasAt = email.includes('@');
+            const endsCorrectly = email.endsWith('.com') || email.endsWith('.vn');
+
+            if (hasAt && endsCorrectly) {
+                result.textContent = "email hợp lệ!";
+                result.className = "valid"; 
+            } else {
+                result.textContent = "email không hợp lệ!";
+                result.className = "invalid"; 
+            }
+        });
+    </script>
+
+</body>
+</html>

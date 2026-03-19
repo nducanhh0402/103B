@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống Quản lý Kho Hàng Pro</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --danger: #dc2626;
+            --success: #16a34a;
+            --warning: #ca8a04;
+            --bg: #f8fafc;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            margin: 0;
+            padding: 20px;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        /* Thống kê */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid var(--primary);
+        }
+
+        .stat-card h3 {
+            margin: 0;
+            font-size: 14px;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+
+        .stat-card p {
+            margin: 10px 0 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: #1e293b;
+        }
+
+        /* Form */
+        .main-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            grid-column: span 4;
+            height: 60px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-ghost {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* Bộ lọc & Tìm kiếm */
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .search-box {
+            flex-grow: 1;
+        }
+
+        /* Bảng */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background: #f1f5f9;
+            padding: 15px;
+            text-align: left;
+            font-size: 14px;
+            color: #475569;
+        }
+
+        td {
+            padding: 15px;
+            border-top: 1px solid #f1f5f9;
+            font-size: 14px;
+        }
+
+        .low-stock {
+            color: var(--danger);
+            font-weight: bold;
+            background: #fee2e2;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .desc-cell {
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #64748b;
+        }
+
+        .error-text {
+            color: var(--danger);
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .invalid {
+            border-color: var(--danger);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>📦 Hệ thống Quản lý Kho Hàng</h2>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Tổng sản phẩm</h3>
+                <p id="stat-total-items">0</p>
+            </div>
+            <div class="stat-card" style="border-left-color: var(--success);">
+                <h3>Tổng số lượng kho</h3>
+                <p id="stat-total-qty">0</p>
+            </div>
+            <div class="stat-card" style="border-left-color: var(--warning);">
+                <h3>Tổng giá trị tài sản</h3>
+                <p id="stat-total-value">0 VNĐ</p>
+            </div>
+        </div>
+
+        <div class="main-card" id="product-form-container">
+            <h3 id="form-title">Thêm Sản Phẩm Mới</h3>
+            <div class="form-grid">
+                <div>
+                    <input type="text" id="p-name" placeholder="Tên sản phẩm *">
+                    <div id="err-name" class="error-text">Không được để trống</div>
+                </div>
+                <div>
+                    <select id="p-category">
+                        <option value="Điện tử">Điện tử</option>
+                        <option value="Gia dụng">Gia dụng</option>
+                        <option value="Thời trang">Thời trang</option>
+                        <option value="Thực phẩm">Thực phẩm</option>
+                    </select>
+                </div>
+                <div>
+                    <input type="number" id="p-price" placeholder="Giá (VNĐ) *" min="0">
+                    <div id="err-price" class="error-text">Giá phải >= 0</div>
+                </div>
+                <div>
+                    <input type="number" id="p-qty" placeholder="Số lượng *" min="0">
+                    <div id="err-qty" class="error-text">Số lượng phải >= 0</div>
+                </div>
+                <textarea id="p-desc" placeholder="Mô tả sản phẩm..."></textarea>
+            </div>
+            <div class="btn-group">
+                <button id="btn-cancel" class="btn-ghost" style="display: none;" onclick="resetForm()">Hủy</button>
+                <button id="btn-submit" class="btn-primary" onclick="handleFormSubmit()">Thêm Sản Phẩm</button>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Tìm kiếm theo tên hoặc mô tả..."
+                    oninput="renderTable()">
+            </div>
+            <select id="filter-category" style="width: 200px;" onchange="renderTable()">
+                <option value="all">Tất cả danh mục</option>
+                <option value="Điện tử">Điện tử</option>
+                <option value="Gia dụng">Gia dụng</option>
+                <option value="Thời trang">Thời trang</option>
+                <option value="Thực phẩm">Thực phẩm</option>
+            </select>
+            <button class="btn-danger" onclick="deleteAllProducts()">Xóa Tất Cả</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Sản phẩm</th>
+                    <th>Danh mục</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Mô tả</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody id="product-list"></tbody>
+        </table>
+    </div>
+
+    <script>
+        // Chức năng 8: Lưu trữ với LocalStorage
+        let products = JSON.parse(localStorage.getItem('pro_products')) || [];
+        let idCounter = JSON.parse(localStorage.getItem('pro_id_counter')) || 1;
+        let editId = null;
+
+        // Chức năng 2: Hiển thị & Format
+        const formatCurrency = (num) => {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(num);
+        };
+
+        function renderTable() {
+            const tbody = document.getElementById('product-list');
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const filterCat = document.getElementById('filter-category').value;
+
+            tbody.innerHTML = '';
+
+            // Chức năng 6 & 7: Logic Tìm kiếm + Lọc
+            const filtered = products.filter(p => {
+                const matchesSearch = p.name.toLowerCase().includes(searchTerm) || p.desc.toLowerCase().includes(searchTerm);
+                const matchesCat = filterCat === 'all' || p.category === filterCat;
+                return matchesSearch && matchesCat;
+            });
+
+            filtered.forEach(p => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td>#${p.id}</td>
+                <td style="font-weight:600">${p.name}</td>
+                <td><span style="background:#f1f5f9; padding:4px 8px; border-radius:15px; font-size:12px">${p.category}</span></td>
+                <td>${formatCurrency(p.price)}</td>
+                <td><span class="${p.qty < 10 ? 'low-stock' : ''}">${p.qty}</span></td>
+                <td class="desc-cell" title="${p.desc}">${p.desc || '---'}</td>
+                <td>
+                    <button class="btn-warning" onclick="editProduct(${p.id})" style="padding:5px 10px; font-size:12px">Sửa</button>
+                    <button class="btn-danger" onclick="deleteProduct(${p.id}, '${p.name}')" style="padding:5px 10px; font-size:12px">Xóa</button>
+                </td>
+            `;
+                tbody.appendChild(row);
+            });
+
+            updateStats();
+        }
+
+        // Chức năng 9: Thống kê
+        function updateStats() {
+            const totalItems = products.length;
+            const totalQty = products.reduce((sum, p) => sum + parseInt(p.qty), 0);
+            const totalValue = products.reduce((sum, p) => sum + (p.price * p.qty), 0);
+
+            document.getElementById('stat-total-items').innerText = totalItems;
+            document.getElementById('stat-total-qty').innerText = totalQty;
+            document.getElementById('stat-total-value').innerText = formatCurrency(totalValue);
+        }
+
+        // Chức năng 1 & 3: Thêm / Sửa
+        function handleFormSubmit() {
+            const name = document.getElementById('p-name').value.trim();
+            const category = document.getElementById('p-category').value;
+            const price = parseFloat(document.getElementById('p-price').value);
+            const qty = parseInt(document.getElementById('p-qty').value);
+            const desc = document.getElementById('p-desc').value.trim();
+
+            // Validation
+            let isValid = true;
+            if (!name) { document.getElementById('err-name').style.display = 'block'; isValid = false; }
+            else { document.getElementById('err-name').style.display = 'none'; }
+
+            if (isNaN(price) || price < 0) { document.getElementById('err-price').style.display = 'block'; isValid = false; }
+            else { document.getElementById('err-price').style.display = 'none'; }
+
+            if (isNaN(qty) || qty < 0) { document.getElementById('err-qty').style.display = 'block'; isValid = false; }
+            else { document.getElementById('err-qty').style.display = 'none'; }
+
+            if (!isValid) return;
+
+            if (editId) {
+                // Cập nhật
+                const index = products.findIndex(p => p.id === editId);
+                products[index] = { ...products[index], name, category, price, qty, desc };
+                editId = null;
+            } else {
+                // Thêm mới
+                const newProduct = { id: idCounter++, name, category, price, qty, desc };
+                products.push(newProduct);
+            }
+
+            saveAndSync();
+            resetForm();
+        }
+
+        // Chức năng 3: Chế độ Sửa
+        function editProduct(id) {
+            const p = products.find(item => item.id === id);
+            if (!p) return;
+
+            editId = id;
+            document.getElementById('p-name').value = p.name;
+            document.getElementById('p-category').value = p.category;
+            document.getElementById('p-price').value = p.price;
+            document.getElementById('p-qty').value = p.qty;
+            document.getElementById('p-desc').value = p.desc;
+
+            document.getElementById('form-title').innerText = "Chỉnh Sửa Sản Phẩm";
+            document.getElementById('btn-submit').innerText = "Cập Nhật";
+            document.getElementById('btn-cancel').style.display = "inline-block";
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Chức năng 4: Xóa
+        function deleteProduct(id, name) {
+            if (confirm(`Bạn có chắc chắn muốn xóa sản phẩm "${name}"?`)) {
+                products = products.filter(p => p.id !== id);
+                if (editId === id) resetForm();
+                saveAndSync();
+            }
+        }
+
+        // Chức năng 5: Xóa tất cả
+        function deleteAllProducts() {
+            if (confirm("⚠️ CẢNH BÁO: Hành động này sẽ xóa toàn bộ dữ liệu kho hàng. Bạn có chắc chắn không?")) {
+                products = [];
+                idCounter = 1;
+                saveAndSync();
+                resetForm();
+            }
+        }
+
+        function resetForm() {
+            editId = null;
+            document.getElementById('p-name').value = '';
+            document.getElementById('p-price').value = '';
+            document.getElementById('p-qty').value = '';
+            document.getElementById('p-desc').value = '';
+            document.getElementById('form-title').innerText = "Thêm Sản Phẩm Mới";
+            document.getElementById('btn-submit').innerText = "Thêm Sản Phẩm";
+            document.getElementById('btn-cancel').style.display = "none";
+
+            // Ẩn các lỗi cũ
+            document.querySelectorAll('.error-text').forEach(el => el.style.display = 'none');
+        }
+
+        function saveAndSync() {
+            localStorage.setItem('pro_products', JSON.stringify(products));
+            localStorage.setItem('pro_id_counter', JSON.stringify(idCounter));
+            renderTable();
+        }
+
+        // Khởi động
+        renderTable();
+    </script>
+
+</body>
+
+</html>

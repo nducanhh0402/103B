@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đếm số ký tự - DOM JS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical; 
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: fit-content;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Kiểm tra số ký tự</h2>
+        
+        <textarea id="messageInput" placeholder="Nhập dữ liệu vào đây..."></textarea>
+        
+        <button id="checkBtn">Kiểm tra</button>
+        
+        <div id="result">Số ký tự là: 0</div>
+    </div>
+
+    <script>
+        const textarea = document.getElementById('messageInput');
+        const button = document.getElementById('checkBtn');
+        const resultDisplay = document.getElementById('result');
+
+        button.onclick = function() {
+            const content = textarea.value;
+
+            const charCount = content.length;
+
+            resultDisplay.textContent = "Số ký tự là: " + charCount;
+        };
+    </script>
+
+</body>
+</html>

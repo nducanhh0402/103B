@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tăng giảm kích thước chữ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+        }
+
+        .content-box {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+
+        #text {
+            transition: font-size 0.2s ease;
+        }
+
+        .controls {
+            display: flex;
+            gap: 20px;
+        }
+
+        button {
+            padding: 10px 25px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        #increaseBtn {
+            background-color: #e7f3ff;
+            color: #007bff;
+        }
+
+        #decreaseBtn {
+            background-color: #fff1f0;
+            color: #ff4d4f;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="content-box">
+        <p id="text">Đây là đoạn văn bản mẫu. Hãy bấm nút để thay đổi kích thước của tôi!</p>
+    </div>
+
+    <div class="controls">
+        <button id="decreaseBtn">-</button>
+        <button id="increaseBtn">+</button>
+    </div>
+
+    <script>
+        let fontSize = 16;
+
+        const textElement = document.getElementById('text');
+        const btnPlus = document.getElementById('increaseBtn');
+        const btnMinus = document.getElementById('decreaseBtn');
+
+        function updateFontSize() {
+            textElement.style.fontSize = fontSize + "px";
+        }
+
+        btnPlus.onclick = function () {
+            fontSize += 2;
+            updateFontSize();
+        };
+
+        btnMinus.onclick = function () {
+            if (fontSize > 8) {
+                fontSize -= 2;
+                updateFontSize();
+            }
+        };
+
+        updateFontSize();
+    </script>
+
+</body>
+
+</html>

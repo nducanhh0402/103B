@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luyện tập DOM - Quản lý môn học</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            line-height: 1.6;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 250px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #007bff;
+        }
+
+        button {
+            padding: 8px 15px;
+            background-color: #efefef;
+            border: 1px solid #767676;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #e5e5e5;
+        }
+
+        ol {
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Danh sách môn học</h2>
+
+    <div class="input-group">
+        <input type="text" id="subjectInput" placeholder="nhập tên môn học">
+        <button id="addBtn">Thêm môn học</button>
+    </div>
+
+    <ol id="subjectList">
+        <li>Toán</li>
+        <li>Lý</li>
+        <li>Hóa</li>
+    </ol>
+
+    <script>
+        const input = document.getElementById('subjectInput');
+        const button = document.getElementById('addBtn');
+        const list = document.getElementById('subjectList');
+
+        button.addEventListener('click', function() {
+            const subjectName = input.value.trim();
+
+            if (subjectName === "") {
+                alert("tên môn học không được để trống!");
+            } else {
+                const newLi = document.createElement('li');
+                newLi.textContent = subjectName;
+
+                list.appendChild(newLi);
+
+                input.value = "";
+                input.focus();
+            }
+        });
+
+        input.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                button.click();
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý nhân viên Rikkei</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            width: 600px;
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h2 { margin-bottom: 20px; }
+
+        .input-group {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        input {
+            border: 1px solid #ccc;
+            padding: 8px;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        #addBtn {
+            padding: 8px 20px;
+            cursor: pointer;
+            background-color: #efefef;
+            border: 1px solid #999;
+            margin-bottom: 25px;
+            border-radius: 4px;
+        }
+
+        #addBtn:hover { background-color: #e0e0e0; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th { background-color: #f4f4f4; font-weight: bold; }
+
+        .pagination {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .pagination button {
+            border: 1px solid #007bff;
+            background: white;
+            color: #007bff;
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        .pagination button.active {
+            background: #007bff;
+            color: white;
+        }
+
+        .pagination button:disabled {
+            border-color: #ccc;
+            color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .pagination button:hover:not(:disabled):not(.active) {
+            background-color: #e7f1ff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Danh sách nhân viên Rikkei</h2>
+    
+    <div class="input-group">
+        <label>tên nhân viên</label>
+        <input type="text" id="nameInput" placeholder="Nhập tên...">
+        <label>chức vụ</label>
+        <input type="text" id="roleInput" placeholder="Nhập chức vụ...">
+    </div>
+    <button id="addBtn">thêm nhân viên</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 15%;">STT</th>
+                <th style="width: 45%;">Tên</th>
+                <th style="width: 40%;">Chức vụ</th>
+            </tr>
+        </thead>
+        <tbody id="employeeTable">
+            </tbody>
+    </table>
+
+    <div class="pagination" id="pagination">
+        </div>
+</div>
+
+<script>
+    let employees = JSON.parse(localStorage.getItem("employees")) || [];
+    let currentPage = 1;
+    const rowsPerPage = 3; 
+
+    const nameInput = document.getElementById("nameInput");
+    const roleInput = document.getElementById("roleInput");
+    const addBtn = document.getElementById("addBtn");
+    const tableBody = document.getElementById("employeeTable");
+    const paginationDiv = document.getElementById("pagination");
+
+    function renderData() {
+        tableBody.innerHTML = "";
+        
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        const paginatedItems = employees.slice(start, end);
+
+        if (paginatedItems.length === 0 && currentPage > 1) {
+            currentPage--;
+            renderData();
+            return;
+        }
+
+        paginatedItems.forEach((emp, index) => {
+            const row = `
+                <tr>
+                    <td>${start + index + 1}</td>
+                    <td>${emp.name}</td>
+                    <td>${emp.role}</td>
+                </tr>`;
+            tableBody.innerHTML += row;
+        });
+
+        renderPagination();
+    }
+
+    function renderPagination() {
+        paginationDiv.innerHTML = "";
+        const totalPages = Math.ceil(employees.length / rowsPerPage);
+
+        if (totalPages <= 1 && employees.length > 0) {
+        }
+
+        const prevBtn = document.createElement("button");
+        prevBtn.innerText = "Previous";
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.onclick = () => { currentPage--; renderData(); };
+        paginationDiv.appendChild(prevBtn);
+
+        for (let i = 1; i <= totalPages; i++) {
+            const btn = document.createElement("button");
+            btn.innerText = i;
+            if (i === currentPage) btn.classList.add("active");
+            btn.onclick = () => { 
+                currentPage = i; 
+                renderData(); 
+            };
+            paginationDiv.appendChild(btn);
+        }
+
+        const nextBtn = document.createElement("button");
+        nextBtn.innerText = "Next";
+        nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+        nextBtn.onclick = () => { currentPage++; renderData(); };
+        paginationDiv.appendChild(nextBtn);
+    }
+
+    addBtn.onclick = function() {
+        const name = nameInput.value.trim();
+        const role = roleInput.value.trim();
+
+        if (name === "" || role === "") {
+            alert("Vui lòng nhập đầy đủ thông tin nhân viên!");
+            return;
+        }
+
+        employees.push({ name: name, role: role });
+
+        localStorage.setItem("employees", JSON.stringify(employees));
+
+        // Reset input
+        nameInput.value = "";
+        roleInput.value = "";
+
+        currentPage = Math.ceil(employees.length / rowsPerPage);
+        
+        renderData();
+    };
+
+    renderData();
+</script>
+
+</body>
+</html>

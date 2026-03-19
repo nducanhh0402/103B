@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const productForm = document.getElementById('product-form');
+        const productNameInput = document.getElementById('product-name');
+        const productPriceInput = document.getElementById('product-price');
+
+        productForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const name = productNameInput.value;
+            const price = productPriceInput.value;
+
+            const newProduct = {
+                id: Date.now(),
+                name: name,
+                price: Number(price)
+            };
+
+            const productItem = document.createElement('li');
+            productItem.classList.add('product-item');
+            productItem.innerHTML = `
+    <div class="product">
+      <h3>${newProduct.name}</h3>
+      <p>Giá: ${newProduct.price.toLocaleString()} VND</p>
+    </div>
+  `;
+
+            productList.appendChild(productItem);
+
+            productNameInput.value = '';
+            productPriceInput.value = '';
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tra cứu thời tiết - DOM JS</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-top: 50px;
+            background-color: #e3f2fd;
+        }
+
+        .weather-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #0288d1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #01579b;
+        }
+
+        #result {
+            margin-top: 20px;
+        }
+
+        .city-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .temp {
+            font-size: 48px;
+            margin: 10px 0;
+            color: #0288d1;
+        }
+
+        .info {
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .error {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+
+        .icon {
+            font-size: 50px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="weather-card">
+        <h2>Dự báo thời tiết</h2>
+        <div class="search-box">
+            <input type="text" id="cityInput" placeholder="Nhập tên thành phố (Hà Nội, Đà Nẵng...)">
+            <button id="searchBtn">Xem</button>
+        </div>
+
+        <div id="result">
+            <p>Nhập tên thành phố để xem thời tiết</p>
+        </div>
+    </div>
+
+    <script>
+        const weatherData = {
+            "Hà Nội": {
+                temperature: 25,
+                humidity: 70,
+                windSpeed: 5,
+                description: "Có mây",
+                icon: "☁️"
+            },
+            "Hồ Chí Minh": {
+                temperature: 32,
+                humidity: 75,
+                windSpeed: 7,
+                description: "Nắng",
+                icon: "☀️"
+            },
+            "Đà Nẵng": {
+                temperature: 28,
+                humidity: 82,
+                windSpeed: 12,
+                description: "Mưa rào",
+                icon: "🌧️"
+            }
+        };
+
+        const cityInput = document.getElementById('cityInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const resultDiv = document.getElementById('result');
+
+        searchBtn.onclick = function () {
+            const cityName = cityInput.value.trim();
+
+            // 2. Kiểm tra xem thành phố có trong dữ liệu không
+            const data = weatherData[cityName];
+
+            if (data) {
+                // 3. Nếu tìm thấy: Hiển thị thông tin
+                resultDiv.innerHTML = `
+                <div class="city-name">${cityName}</div>
+                <div class="icon">${data.icon}</div>
+                <div class="temp">${data.temperature}°C</div>
+                <div class="info">Độ ẩm: ${data.humidity}%</div>
+                <div class="info">Tốc độ gió: ${data.windSpeed} km/h</div>
+                <div class="info">Trạng thái: ${data.description}</div>
+            `;
+            } else {
+                resultDiv.innerHTML = `<p class="error">Thành phố "${cityName}" không tồn tại trong dữ liệu!</p>`;
+            }
+        };
+
+        cityInput.onkeypress = function (e) {
+            if (e.key === 'Enter') searchBtn.click();
+        };
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Bộ đếm số lần bấm</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+        }
+        button {
+            font-size: 24px;
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 2px solid #555;
+            background-color: #eee;
+            border-radius: 5px;
+        }
+        h2 {
+            font-size: 32px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <button id="btn-click">Bấm vào tôi</button>
+    <h2 id="result">Số lần bấm: 0</h2>
+
+    <script>
+        let count = 0;
+
+        const btn = document.getElementById('btn-click');
+        const resultDisplay = document.getElementById('result');
+
+        btn.addEventListener('click', function() {
+            count++;
+
+            resultDisplay.textContent = `Số lần bấm: ${count}`;
+        });
+    </script>
+</body>
+</html>

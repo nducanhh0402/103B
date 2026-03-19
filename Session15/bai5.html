@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>To-Do List K24_PTIT</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            padding-top: 50px;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 450px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        #addBtn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #addBtn:hover { background-color: #218838; }
+
+        .todo-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .todo-item span { font-size: 16px; }
+
+        .delete-btn {
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .delete-btn:hover { background-color: #cc0000; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>To-Do List K24_PTIT</h2>
+
+        <div class="input-group">
+            <input type="text" id="todoInput" placeholder="Nhập nhiệm vụ...">
+            <button id="addBtn">Thêm</button>
+        </div>
+
+        <ul class="todo-list" id="todoList">
+            <li class="todo-item">
+                <span>học dom js</span>
+                <button class="delete-btn">X</button>
+            </li>
+            <li class="todo-item">
+                <span>làm bài tập dom js</span>
+                <button class="delete-btn">X</button>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        const input = document.getElementById('todoInput');
+        const addBtn = document.getElementById('addBtn');
+        const todoList = document.getElementById('todoList');
+
+        function addTask() {
+            const taskText = input.value.trim();
+
+            if (taskText === "") {
+                alert("Vui lòng nhập nhiệm vụ!");
+                return;
+            }
+
+            const li = document.createElement('li');
+            li.className = 'todo-item';
+
+            const span = document.createElement('span');
+            span.textContent = taskText;
+
+            const delBtn = document.createElement('button');
+            delBtn.textContent = 'X';
+            delBtn.className = 'delete-btn';
+
+            delBtn.onclick = function() {
+                removeTask(li);
+            };
+
+            li.appendChild(span);
+            li.appendChild(delBtn);
+            todoList.appendChild(li);
+
+            input.value = "";
+            input.focus();
+        }
+
+        function removeTask(element) {
+            const confirmDelete = confirm("Bạn có chắc chắn muốn xóa nhiệm vụ này không?");
+            if (confirmDelete) {
+                element.remove();
+            }
+        }
+
+        addBtn.onclick = addTask;
+
+        input.onkeypress = function(e) {
+            if (e.key === 'Enter') addTask();
+        };
+
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.onclick = function() {
+                removeTask(this.parentElement);
+            };
+        });
+    </script>
+
+</body>
+</html>
